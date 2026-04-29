@@ -1,26 +1,81 @@
 @import "tailwindcss";
 
+@theme {
+  --color-totto-red: #e4d2ef;
+  --color-totto-dark: #1E1E1E;
+  --color-totto-gray: #F5F5F5;
+  --color-totto-text: #333333;
+  --font-inter: var(--font-inter);
+  --font-italiana: var(--font-italiana);
+}
+
+/* Forzar tipografía en todos los títulos y elementos de marca */
+h1, h2, h3, h4, h5, h6, 
+.font-heading, 
+[class*="text-5xl"], 
+[class*="text-6xl"], 
+[class*="text-7xl"],
+#logo-iona {
+  font-family: var(--font-italiana), serif !important;
+  font-weight: 400 !important; /* Italiana solo tiene peso 400 */
+}
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --foreground: var(--color-totto-text);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), sans-serif;
+  overflow-x: hidden;
+}
+
+/* Estilos para el HTML que viene de Shopify */
+.shopify-description {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #4b5563;
+}
+
+.shopify-description p,
+.shopify-description div {
+  margin-bottom: 0.75rem;
+}
+
+.shopify-description ul {
+  list-style-type: disc;
+  padding-left: 1.25rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.shopify-description li {
+  margin-bottom: 0.25rem;
+}
+
+.shopify-description strong, 
+.shopify-description b {
+  font-weight: 700;
+  color: #111827; /* text-gray-900 */
+}
+
+.shopify-description h1, 
+.shopify-description h2, 
+.shopify-description h3, 
+.shopify-description h4 {
+  font-weight: 700;
+  color: #111827;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Ocultar scrollbar pero mantener funcionalidad */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
