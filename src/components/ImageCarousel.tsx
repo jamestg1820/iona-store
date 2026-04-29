@@ -30,12 +30,39 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
 
+  // Soporte para Swipe en Móvil
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+    if (isLeftSwipe) goToNext();
+    if (isRightSwipe) goToPrevious();
+  };
+
   return (
     <div className="flex flex-col gap-4">
       {/* Imagen Principal */}
-      <div className="relative w-full aspect-[4/5] bg-gray-50 rounded-2xl overflow-hidden group border border-gray-100">
+      <div 
+        className="relative w-full aspect-[4/5] bg-gray-50 rounded-2xl overflow-hidden group border border-gray-100 touch-pan-y"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
         <div 
-          className="flex transition-transform duration-500 ease-out h-full"
+          className="flex transition-transform duration-500 ease-out h-full cursor-grab active:cursor-grabbing"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {images.map((image, index) => (
