@@ -24,6 +24,17 @@ export const useCartStore = create<CartState>((set) => ({
   closeCart: () => set({ isOpen: false }),
   toggleCart: () => set((state) => ({ isOpen: !state.isOpen })),
   addItem: (product, quantity) => set((state) => {
+    // Rastrear evento en Facebook Pixel
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'AddToCart', {
+        content_name: product.name,
+        content_ids: [product.id],
+        content_type: 'product',
+        value: product.price * quantity,
+        currency: 'COP'
+      });
+    }
+
     const existingItem = state.items.find(item => item.id === product.id);
     if (existingItem) {
       return {

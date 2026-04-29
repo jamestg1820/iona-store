@@ -6,6 +6,9 @@ import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
 import { Toaster } from "sonner";
 
+import FacebookPixel from "@/components/FacebookPixel";
+import { Suspense } from "react";
+
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -18,8 +21,8 @@ const italiana = Italiana({
 });
 
 export const metadata: Metadata = {
-  title: "Tienda Oficial Totto | Morrales, Viaje, Accesorios y Ropa",
-  description: "En Totto encuentra maletas y ropa para mujer, hombre y niños, maletas de viaje y complementos, accesorios y artículos para tu mascota.",
+  title: "Tienda Oficial IONA | Carteras, Maletas y Accesorios",
+  description: "En IONA encuentra carteras y maletas para mujer con diseño exclusivo y elegancia.",
 };
 
 export default function RootLayout({
@@ -33,6 +36,9 @@ export default function RootLayout({
       className={`${inter.variable} ${italiana.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#F5F5F5]">
+        <Suspense fallback={null}>
+          <FacebookPixel />
+        </Suspense>
         <Navbar />
         <main className="flex-grow bg-white w-full mx-auto">
           {children}
