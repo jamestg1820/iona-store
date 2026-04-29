@@ -54,7 +54,7 @@ export default function ProductCarousel({ title, products = mockProducts }: { ti
     const cartProduct = {
       id: product.id,
       handle: product.handle || '',
-      name: product.title || product.name,
+      name: product.name,
       price: product.price,
       image: product.image,
       variantId: product.variantId
@@ -76,7 +76,7 @@ export default function ProductCarousel({ title, products = mockProducts }: { ti
     >
       <div className="max-w-7xl mx-auto px-4 lg:px-8 relative group/section">
         <div className="mb-10 text-center md:text-left">
-          <h2 className="text-3xl md:text-4xl font-black tracking-tight text-gray-900 uppercase">
+          <h2 className="text-3xl md:text-4xl font-heading tracking-tight text-gray-900 uppercase">
             {title}
           </h2>
         </div>
@@ -109,7 +109,7 @@ export default function ProductCarousel({ title, products = mockProducts }: { ti
               <Link href={`/producto/${product.handle}`} className="flex flex-col h-full">
                 <div className="relative aspect-[4/5] bg-gray-50 overflow-hidden">
                   {product.badge && (
-                    <div className="absolute top-3 left-3 bg-[#B5BCE5] text-white text-[10px] font-bold px-2.5 py-1 z-10 tracking-wider">
+                    <div className="absolute top-3 left-3 bg-[#e4d2ef] text-gray-800 text-[10px] font-bold px-2.5 py-1 z-10 tracking-wider">
                       {product.badge}
                     </div>
                   )}
@@ -132,7 +132,7 @@ export default function ProductCarousel({ title, products = mockProducts }: { ti
                 </div>
                 
                 <div className="p-5 flex flex-col flex-grow">
-                  <h3 className="font-semibold text-gray-800 group-hover/card:text-[#B5BCE5] transition-colors mb-2 line-clamp-2 min-h-[48px]">
+                  <h3 className="font-semibold text-gray-800 group-hover/card:text-[#e4d2ef] transition-colors mb-2 line-clamp-2 min-h-[48px]">
                     {product.name}
                   </h3>
                   <div className="flex items-center space-x-3 mt-3">
@@ -153,7 +153,7 @@ export default function ProductCarousel({ title, products = mockProducts }: { ti
                       e.stopPropagation();
                       handleAddToCart(e, product);
                     }}
-                    className="w-full bg-[#B5BCE5] text-white py-3 rounded font-bold hover:bg-black transition-colors flex items-center justify-center shadow-lg"
+                    className="w-full bg-[#e4d2ef] text-gray-800 py-3 rounded font-bold hover:bg-black hover:text-white transition-colors flex items-center justify-center shadow-lg"
                   >
                     <ShoppingCart className="w-4 h-4 mr-2" />
                     AGREGAR AL CARRITO
