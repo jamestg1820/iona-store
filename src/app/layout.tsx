@@ -7,6 +7,7 @@ import CartDrawer from "@/components/CartDrawer";
 import { Toaster } from "sonner";
 
 import FacebookPixel from "@/components/FacebookPixel";
+import ShopifyAnalytics from "@/components/ShopifyAnalytics";
 import { Suspense } from "react";
 
 const inter = Inter({
@@ -38,6 +39,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#F5F5F5]">
         <Suspense fallback={null}>
           <FacebookPixel />
+          <ShopifyAnalytics />
         </Suspense>
         <Navbar />
         <main className="flex-grow bg-white w-full mx-auto">
