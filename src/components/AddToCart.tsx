@@ -44,9 +44,8 @@ export default function AddToCart({ product }: { product: any }) {
 
     addItem(cartProduct, quantity);
     
-    toast.success(`${cartProduct.name} agregado al carrito`, {
-      description: `Cantidad: ${quantity}`,
-    });
+    // Abrir el carrito
+    openCart();
   };
 
   // Función para obtener la imagen de una opción de color

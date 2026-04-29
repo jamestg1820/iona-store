@@ -61,9 +61,6 @@ export default function ProductCarousel({ title, products = mockProducts }: { ti
     };
 
     addItem(cartProduct, 1);
-    toast.success(`${cartProduct.name} agregado al carrito`, {
-      description: "¡Excelente elección!",
-    });
   };
 
   return (
