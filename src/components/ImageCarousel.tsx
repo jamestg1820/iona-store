@@ -10,6 +10,16 @@ interface ImageCarouselProps {
 export default function ImageCarousel({ images }: ImageCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  useEffect(() => {
+    if (!images || images.length <= 1) return;
+
+    const timer = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, [images, currentIndex]);
+
   if (!images || images.length === 0) return null;
 
   const goToPrevious = () => {
