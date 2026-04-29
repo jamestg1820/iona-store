@@ -86,14 +86,12 @@ export default function CartDrawer() {
                       <div className="flex-1 flex flex-col">
                         <h3 className="text-gray-800 font-light text-[15px] pr-4 tracking-wide mb-1.5">{item.product.name}</h3>
                         
-                        <div className="text-sm text-gray-500 flex items-center mb-3">
-                          <span className="mr-1">Color:</span>
-                          <select className="bg-transparent border-none font-bold text-gray-900 p-0 pr-4 focus:ring-0 cursor-pointer outline-none">
-                            <option value="marron">Marrón</option>
-                            <option value="negro">Negro</option>
-                            <option value="beige">Beige</option>
-                          </select>
-                        </div>
+                        {Object.entries(item.product.selectedOptions || {}).map(([key, value]) => (
+                          <div key={key} className="text-[11px] text-gray-500 flex items-center mb-1 tracking-wider">
+                            <span className="mr-1 uppercase font-medium">{key}:</span>
+                            <span className="font-black text-gray-900 uppercase">{value as string}</span>
+                          </div>
+                        ))}
                         
                         <div className="flex items-center gap-3 text-gray-600 mb-4">
                           <button className="hover:text-black transition-colors">

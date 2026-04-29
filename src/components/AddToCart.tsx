@@ -33,7 +33,7 @@ export default function AddToCart({ product }: { product: any }) {
 
   const handleAddToCart = () => {
     const cartProduct = {
-      id: product.id,
+      id: selectedVariant.id, // Usamos variantId como ID único en el carrito
       handle: product.handle || '',
       name: product.title || product.name,
       price: selectedVariant.price,
@@ -43,19 +43,12 @@ export default function AddToCart({ product }: { product: any }) {
     };
 
     addItem(cartProduct, quantity);
-  };
-
-  // Función para obtener la imagen de una opción de color
-  const getColorImage = (optionName: string, value: string) => {
-    const variant = product.variants.find((v: any) => 
-      v.selectedOptions.some((opt: any) => opt.name === optionName && opt.value === value)
-    );
-    return variant?.image?.url || product.images[0]?.url;
+    toast.success("Producto agregado al carrito");
   };
 
   return (
     <div className="flex flex-col space-y-8">
-      {/* Opciones del Producto (Colores como Swatches) */}
+      {/* Opciones del Producto (Lista de Colores) */}
       {product.options && product.options
         .filter((option: any) => !(option.name === 'Title' && option.values.includes('Default Title')))
         .map((option: any) => {
@@ -63,27 +56,31 @@ export default function AddToCart({ product }: { product: any }) {
           return (
             <div key={option.name} className="flex flex-col space-y-4">
               <h3 className="text-sm font-black text-gray-900 uppercase tracking-widest">
-                {option.name}: <span className="font-light text-gray-500 ml-2">{selectedOptions[option.name]}</span>
+                SELECCIONA {option.name}: <span className="font-light text-gray-500 ml-2">{selectedOptions[option.name]}</span>
               </h3>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-col space-y-2">
                 {option.values.map((value: string) => (
                   <button
                     key={value}
                     onClick={() => setSelectedOptions(prev => ({ ...prev, [option.name]: value }))}
-                    className={`relative transition-all duration-200 ${
-                      isColor 
-                        ? `w-14 h-14 rounded-md overflow-hidden border-2 ${selectedOptions[option.name] === value ? 'ring-2 ring-[#e4d2ef] ring-offset-2 scale-110 shadow-lg' : 'border border-gray-100 hover:border-[#e4d2ef]/50'}`
-                        : `px-6 py-2 rounded-full border-2 text-sm font-bold ${selectedOptions[option.name] === value ? 'border-black bg-black text-white' : 'border-gray-200 text-gray-600 hover:border-gray-400'}`
+                    className={`flex items-center w-full px-5 py-4 rounded-xl border-2 transition-all duration-300 text-left group ${
+                      selectedOptions[option.name] === value 
+                        ? 'border-black bg-black text-white shadow-lg transform scale-[1.01]' 
+                        : 'border-gray-100 bg-white text-gray-700 hover:border-gray-300'
                     }`}
                   >
-                    {isColor ? (
-                      <img 
-                        src={getColorImage(option.name, value)} 
-                        alt={value} 
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      value
+                    <div className={`w-5 h-5 rounded-full border-2 mr-4 flex items-center justify-center transition-all duration-300 ${
+                      selectedOptions[option.name] === value 
+                        ? 'border-white bg-white' 
+                        : 'border-gray-300 bg-transparent group-hover:border-gray-400'
+                    }`}>
+                      {selectedOptions[option.name] === value && (
+                        <div className="w-2.5 h-2.5 rounded-full bg-black animate-in fade-in zoom-in duration-300" />
+                      )}
+                    </div>
+                    <span className="text-[13px] font-black uppercase tracking-widest">{value}</span>
+                    {selectedOptions[option.name] === value && (
+                      <span className="ml-auto text-[10px] font-bold opacity-60">SELECCIONADO</span>
                     )}
                   </button>
                 ))}
@@ -95,10 +92,10 @@ export default function AddToCart({ product }: { product: any }) {
       <div className="flex flex-col items-center w-full space-y-4 pt-2">
         {/* Selector de Cantidad Estilo Pill (A la izquierda) */}
         <div className="w-full flex justify-start">
-          <div className="flex items-center justify-between border border-gray-200 rounded-full w-[80px] px-2 py-1 bg-gray-50/50">
-            <button onClick={handleDecrease} className="text-sm font-bold text-gray-500 hover:text-[#e4d2ef] transition-colors">−</button>
-            <span className="font-bold text-xs text-gray-900">{quantity}</span>
-            <button onClick={handleIncrease} className="text-sm font-bold text-gray-500 hover:text-[#e4d2ef] transition-colors">+</button>
+          <div className="flex items-center justify-between border border-gray-200 rounded-full w-[100px] px-3 py-2 bg-gray-50/50">
+            <button onClick={handleDecrease} className="w-6 h-6 flex items-center justify-center text-lg font-bold text-gray-400 hover:text-black transition-colors">−</button>
+            <span className="font-black text-sm text-gray-900">{quantity}</span>
+            <button onClick={handleIncrease} className="w-6 h-6 flex items-center justify-center text-lg font-bold text-gray-400 hover:text-black transition-colors">+</button>
           </div>
         </div>
 
@@ -106,7 +103,7 @@ export default function AddToCart({ product }: { product: any }) {
         <button 
           onClick={handleAddToCart}
           data-add-to-cart
-          className="w-full max-w-[280px] bg-[#e4d2ef] text-gray-800 py-3.5 rounded-full font-bold tracking-wider text-sm hover:bg-black hover:text-white transition-all duration-300 shadow-md active:scale-[0.98] mx-auto"
+          className="w-full bg-[#e4d2ef] text-gray-800 py-4 rounded-full font-black tracking-[0.2em] text-sm hover:bg-black hover:text-white transition-all duration-300 shadow-xl active:scale-[0.98] mx-auto"
         >
           AGREGAR AL CARRITO
         </button>

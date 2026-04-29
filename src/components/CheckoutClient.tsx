@@ -253,9 +253,16 @@ export default function CheckoutClient() {
                   <img src={item.product.image} alt={item.product.name} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1 flex flex-col justify-center">
-                  <h3 className="font-medium text-gray-900 text-sm line-clamp-2">{item.product.name}</h3>
-                  <p className="text-xs text-gray-500 mt-1">Cant: {item.quantity}</p>
-                  <p className="font-bold text-gray-900 mt-1">${(item.product.price * item.quantity).toLocaleString('es-CO')}</p>
+                  <h3 className="font-bold text-gray-900 text-sm line-clamp-1">{item.product.name}</h3>
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    {Object.entries(item.product.selectedOptions || {}).map(([key, value]) => (
+                      <span key={key} className="text-[10px] text-gray-400 font-bold uppercase">
+                        {value as string}
+                      </span>
+                    ))}
+                    <span className="text-[10px] text-gray-400 font-bold uppercase">QTY: {item.quantity}</span>
+                  </div>
+                  <p className="font-black text-gray-900 mt-1">${(item.product.price * item.quantity).toLocaleString('es-CO')}</p>
                 </div>
               </div>
             ))}
