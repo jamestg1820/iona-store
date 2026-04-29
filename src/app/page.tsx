@@ -1,10 +1,12 @@
 import HeroBanner from "@/components/HeroBanner";
 import CategoryGrid from "@/components/CategoryGrid";
 import ProductCarousel from "@/components/ProductCarousel";
-import { getProducts } from "@/lib/shopify";
+import { getProducts, getCollectionProducts } from "@/lib/shopify";
 
 export default async function Home() {
   const shopifyProducts = await getProducts();
+  const recommendedResults = await getCollectionProducts('recomendados-para-ti');
+  const recommendedProducts = recommendedResults.products;
 
   return (
     <>
@@ -21,8 +23,8 @@ export default async function Home() {
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
             <div className="relative z-10 text-center text-white px-4 mt-16 md:mt-0">
-              <h2 className="text-4xl md:text-5xl font-heading mb-4 tracking-tight">VIAJA LIGERO</h2>
-              <p className="text-lg md:text-xl mb-8 max-w-lg mx-auto text-gray-200 font-medium">Equipaje ideal para todo tipo de viaje con el diseño, innovación y durabilidad de Totto.</p>
+              <h2 className="text-4xl md:text-5xl font-heading mb-4 tracking-tight text-white">VIAJA LIGERO</h2>
+              <p className="text-lg md:text-xl mb-8 max-w-lg mx-auto text-gray-200 font-medium">Equipaje ideal para todo tipo de viaje con el diseño, innovación y durabilidad de IONA.</p>
               <a href="/viaje" className="bg-white text-black px-8 py-4 rounded-full font-bold hover:bg-gray-100 transition-colors inline-block text-sm shadow-md">
                 VER MALETAS DE VIAJE
               </a>
@@ -31,7 +33,10 @@ export default async function Home() {
         </div>
       </section>
 
-      <ProductCarousel title="RECOMENDADOS PARA TI" />
+      <ProductCarousel 
+        title="RECOMENDADOS PARA TI" 
+        products={recommendedProducts.length > 0 ? recommendedProducts : undefined} 
+      />
     </>
   );
 }
