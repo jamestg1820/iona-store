@@ -61,32 +61,24 @@ export interface UIProduct {
 }
 
 export function mapShopifyToUIProduct(product: ShopifyProduct): UIProduct {
-  const price = new Intl.NumberFormat('es-CO', {
-    style: 'currency',
-    currency: product.priceRange.minVariantPrice.currencyCode,
-    minimumFractionDigits: 0,
-  }).format(parseFloat(product.priceRange.minVariantPrice.amount));
-
-  let oldPrice = null;
+  const price = parseFloat(product.priceRange.minVariantPrice.amount);
+  let originalPrice = undefined;
+  
   if (product.compareAtPriceRange?.minVariantPrice?.amount) {
-    oldPrice = new Intl.NumberFormat('es-CO', {
-      style: 'currency',
-      currency: product.compareAtPriceRange.minVariantPrice.currencyCode,
-      minimumFractionDigits: 0,
-    }).format(parseFloat(product.compareAtPriceRange.minVariantPrice.amount));
+    originalPrice = parseFloat(product.compareAtPriceRange.minVariantPrice.amount);
   }
 
-  let badge = null;
+  let badge = undefined;
   if (product.tags.includes('NUEVO')) badge = 'NUEVO';
   else if (product.tags.includes('MÁS VENDIDO')) badge = 'MÁS VENDIDO';
-  else if (oldPrice) badge = 'OFERTA';
+  else if (originalPrice && originalPrice > price) badge = 'OFERTA';
 
   return {
     id: product.id,
     handle: product.handle,
     name: product.title,
     price,
-    oldPrice,
+    originalPrice,
     image: product.featuredImage?.url || '',
     badge,
   };
