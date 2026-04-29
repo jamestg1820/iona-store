@@ -43,9 +43,6 @@ export default function AddToCart({ product }: { product: any }) {
     };
 
     addItem(cartProduct, quantity);
-    
-    // Abrir el carrito
-    openCart();
   };
 
   // Función para obtener la imagen de una opción de color
