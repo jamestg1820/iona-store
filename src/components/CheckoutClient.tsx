@@ -68,6 +68,22 @@ export default function CheckoutClient() {
       toast.success("¡Pedido confirmado!", {
         description: "Tu pedido será despachado pronto.",
       });
+
+      // 🎯 Enviar evento Purchase a Facebook Pixel
+      if (typeof window !== 'undefined' && window.fbq) {
+        window.fbq('track', 'Purchase', {
+          value: subtotal,
+          currency: 'COP',
+          content_type: 'product',
+          content_ids: items.map(item => item.product.id),
+          contents: items.map(item => ({
+            id: item.product.id,
+            quantity: item.quantity,
+            item_price: item.product.price
+          })),
+          num_items: items.reduce((total, item) => total + item.quantity, 0)
+        });
+      }
       
       // Limpiar carrito y redirigir
       useCartStore.getState().items.forEach(item => useCartStore.getState().removeItem(item.id));
