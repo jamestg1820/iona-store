@@ -6,7 +6,7 @@ export default function HeroBanner() {
       {/* Background Image - Using a placeholder for now */}
       <div className="absolute inset-0">
         <img 
-          src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
+          src="/images/hero-banner.png" 
           alt="Nueva Colección Totto" 
           className="w-full h-full object-cover object-center"
         />
