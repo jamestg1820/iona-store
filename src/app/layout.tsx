@@ -7,7 +7,7 @@ import CartDrawer from "@/components/CartDrawer";
 import { Toaster } from "sonner";
 
 import FacebookPixel from "@/components/FacebookPixel";
-import ShopifyAnalytics from "@/components/ShopifyAnalytics";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Suspense } from "react";
 
 const inter = Inter({
@@ -39,8 +39,10 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#F5F5F5]">
         <Suspense fallback={null}>
           <FacebookPixel />
-          <ShopifyAnalytics />
         </Suspense>
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        )}
         <Navbar />
         <main className="flex-grow bg-white w-full mx-auto">
           {children}
