@@ -16,14 +16,14 @@ export default function HeroBanner() {
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 lg:px-8 h-full flex items-center">
-        <div className="max-w-xl text-white">
+        <div className="max-w-lg text-white">
           <span className="inline-block py-1.5 px-4 rounded-full bg-[#e4d2ef] text-gray-800 text-xs font-bold tracking-widest mb-6">
             NUEVA COLECCIÓN
           </span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading mb-6 leading-tight tracking-tight uppercase">
             FANS DE LA<br />PRACTICIDAD
           </h1>
-          <p className="text-base md:text-lg mb-10 font-medium text-gray-200">
+          <p className="text-sm md:text-base mb-10 font-medium text-gray-200">
             Más funcionalidad, más color e innovación para ti. Descubre los nuevos diseños con múltiples compartimentos.
           </p>
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
