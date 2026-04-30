@@ -20,15 +20,15 @@ export default function HeroBanner() {
           <span className="inline-block py-1.5 px-4 rounded-full bg-[#e4d2ef] text-gray-800 text-xs font-bold tracking-widest mb-6">
             NUEVA COLECCIÓN
           </span>
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading mb-6 leading-tight tracking-tight uppercase">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading mb-6 leading-tight tracking-tight uppercase">
             FANS DE LA<br />PRACTICIDAD
           </h1>
-          <p className="text-lg md:text-xl mb-10 font-medium text-gray-200">
+          <p className="text-base md:text-lg mb-10 font-medium text-gray-200">
             Más funcionalidad, más color e innovación para ti. Descubre los nuevos diseños con múltiples compartimentos.
           </p>
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
             <Link 
-              href="/nueva-coleccion" 
+              href="/coleccion/Catalogo" 
               className="bg-[#e4d2ef] text-gray-800 px-8 py-4 rounded-full font-bold hover:bg-black hover:text-white transition-colors text-center"
             >
               ¡COMPRAR AHORA!
