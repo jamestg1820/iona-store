@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 const categories = [
-  { name: 'Morrales', image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', href: '/coleccion/morrales' },
+  { name: 'Morrales', image: 'https://tottoco.vtexassets.com/assets/vtex.file-manager-graphql/images/37fb41f9-44a4-452f-9fce-b7dd63032c41___1f7991ea87d9a03fa6cb02ae5cdbfe6b.svg', href: '/coleccion/morrales' },
   { name: 'Mujer', image: 'https://tottoco.vtexassets.com/assets/vtex.file-manager-graphql/images/21e17950-ebe0-4ddf-acc6-c47c5ed052b6___4d5d524ac0436da604f684fff9521ea6.svg', href: '/coleccion/mujer' },
   { name: 'Hombre', image: 'https://tottoco.vtexassets.com/assets/vtex.file-manager-graphql/images/9260cebc-903a-4ce1-b18b-1017a9ab5a06___f3d48c444d008d1ac359028d9319d9a0.svg', href: '/coleccion/hombre' },
   { name: 'Carteras', image: 'https://tottoco.vtexassets.com/assets/vtex.file-manager-graphql/images/53a43979-0a5d-43f0-ba2e-37d21c7ee949___c782564e58912cd706779e2aeada4565.svg', href: '/coleccion/carteras' },
