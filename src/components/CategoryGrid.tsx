@@ -17,7 +17,7 @@ export default function CategoryGrid() {
           <h2 className="text-3xl md:text-4xl font-black tracking-tight text-gray-900">
             EXPLORA POR CATEGORÍA
           </h2>
-          <Link href="/coleccion" className="hidden md:block font-bold text-[#B5BCE5] hover:underline">
+          <Link href="/coleccion/Catalogo" className="hidden md:block font-bold text-[#B5BCE5] hover:underline">
             Ver todo
           </Link>
         </div>
@@ -40,7 +40,7 @@ export default function CategoryGrid() {
         </div>
         
         <div className="mt-8 text-center md:hidden">
-          <Link href="/coleccion" className="font-bold text-[#B5BCE5] hover:underline">
+          <Link href="/coleccion/Catalogo" className="font-bold text-[#B5BCE5] hover:underline">
             Ver todo
           </Link>
         </div>

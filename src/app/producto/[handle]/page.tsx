@@ -143,6 +143,16 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
                 </ul>
               </Accordion>
             </div>
+
+            {/* Botón Ver Catálogo */}
+            <div className="mt-8">
+              <Link 
+                href="/coleccion/Catalogo" 
+                className="block w-full bg-black text-white text-center py-4 rounded-full font-bold hover:bg-[#e4d2ef] hover:text-gray-800 transition-all uppercase tracking-widest text-xs shadow-lg"
+              >
+                Ver catálogo
+              </Link>
+            </div>
           </div>
         </div>
       </div>
