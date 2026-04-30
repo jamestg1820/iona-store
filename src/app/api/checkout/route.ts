@@ -118,17 +118,21 @@ export async function POST(request: Request) {
             event_id: body.eventId, // MISMO ID DEL CLIENTE PARA DEDUPLICACIÓN
             action_source: 'website',
             event_source_url: request.url,
-            user_data: {
-              em: [hash(customer.email || '')],
-              ph: [hash(customer.phone || '')],
-              fn: [hash(firstName)],
-              ln: [hash(lastName)],
-              ct: [hash(shippingAddress.city || '')],
-              st: [hash(shippingAddress.province || '')],
-              country: [hash('co')],
-              client_ip_address: request.headers.get('x-forwarded-for')?.split(',')[0] || '127.0.0.1',
-              client_user_agent: request.headers.get('user-agent') || '',
-            },
+              user_data: {
+                em: [hash(customer.email || '')],
+                ph: [hash(customer.phone || '')],
+                fn: [hash(firstName)],
+                ln: [hash(lastName)],
+                ct: [hash(shippingAddress.city || '')],
+                st: [hash(shippingAddress.province || '')],
+                zp: [hash(shippingAddress.zip || '')], // ZIP/Código Postal
+                country: [hash('co')],
+                external_id: [hash(customer.email || 'guest')], // ID Externo (Recomendado)
+                client_ip_address: request.headers.get('x-forwarded-for')?.split(',')[0] || '127.0.0.1',
+                client_user_agent: request.headers.get('user-agent') || '',
+                fbp: body.fbp, // Browser ID
+                fbc: body.fbc, // Click ID
+              },
             custom_data: {
               value: items.reduce((total: number, item: any) => total + (item.product.price * item.quantity), 0),
               currency: 'COP',

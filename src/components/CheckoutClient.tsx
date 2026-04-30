@@ -37,6 +37,17 @@ export default function CheckoutClient() {
     const nombres = formData.get('nombres') as string;
     const apellidos = " "; 
     
+    // Capturar cookies de Facebook para CAPI
+    const getCookie = (name: string) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop()?.split(';').shift();
+      return null;
+    };
+
+    const fbp = getCookie('_fbp');
+    const fbc = getCookie('_fbc');
+    
     const payload = {
       items: items,
       eventId: eventId, // Enviamos el ID al servidor
@@ -52,7 +63,9 @@ export default function CheckoutClient() {
         province: formData.get('departamento'),
         neighborhood: formData.get('barrio')
       },
-      note: formData.get('notas')
+      note: formData.get('notas'),
+      fbp: fbp,
+      fbc: fbc
     };
 
     try {
