@@ -189,7 +189,7 @@ export async function getCollectionProducts(handle: string) {
     query getCollectionProducts($handle: String!) {
       collection(handle: $handle) {
         title
-        products(first: 8) {
+        products(first: 100) {
           edges {
             node {
               id

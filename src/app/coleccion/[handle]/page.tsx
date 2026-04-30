@@ -2,9 +2,24 @@ import { getCollectionProducts } from "@/lib/shopify";
 import Link from "next/link";
 import { ChevronRight, ShoppingCart } from "lucide-react";
 
-export default async function CollectionPage({ params }: { params: Promise<{ handle: string }> }) {
+export default async function CollectionPage({ 
+  params,
+  searchParams 
+}: { 
+  params: Promise<{ handle: string }>,
+  searchParams: Promise<{ page?: string }>
+}) {
   const { handle } = await params;
+  const { page } = await searchParams;
   const { title, products } = await getCollectionProducts(handle);
+
+  const currentPage = parseInt(page || '1');
+  const productsPerPage = 8;
+  const totalProducts = products.length;
+  const totalPages = Math.ceil(totalProducts / productsPerPage);
+  
+  const startIndex = (currentPage - 1) * productsPerPage;
+  const currentProducts = products.slice(startIndex, startIndex + productsPerPage);
 
   return (
     <div className="min-h-screen bg-white">
@@ -25,52 +40,72 @@ export default async function CollectionPage({ params }: { params: Promise<{ han
         </h1>
         <p className="text-gray-500 mb-10">Explora todos los productos de esta categoría.</p>
 
-        {products.length === 0 ? (
+        {currentProducts.length === 0 ? (
           <div className="py-20 text-center">
             <h2 className="text-2xl text-gray-600 font-bold mb-4">No se encontraron productos</h2>
             <p className="text-gray-500">Todavía no has agregado productos a la colección "{handle}" en Shopify.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.map((product: any) => (
-              <div key={product.id} className="bg-white border border-gray-100 rounded-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group flex flex-col">
-                <Link href={`/producto/${product.handle}`} className="flex flex-col flex-grow">
-                  <div className="relative aspect-[4/5] bg-gray-50 overflow-hidden">
-                    {product.badge && (
-                      <div className="absolute top-3 left-3 bg-[#e4d2ef] text-gray-800 text-[10px] font-bold px-2.5 py-1 z-10 tracking-wider">
-                        {product.badge}
-                      </div>
-                    )}
-                    <img 
-                      src={product.image} 
-                      alt={product.name} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    
-                    {/* Hover Button (Visual only since card is a link) */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-[120%] group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
-                      <div className="w-full bg-[#e4d2ef] text-gray-800 py-3 rounded font-bold hover:bg-black hover:text-white transition-colors flex items-center justify-center shadow-lg">
-                        <ShoppingCart className="w-4 h-4 mr-2" />
-                        VER DETALLES
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="p-5 flex flex-col flex-grow">
-                    <h3 className="font-semibold text-gray-800 group-hover:text-[#e4d2ef] transition-colors mb-2 line-clamp-2 min-h-[48px]">
-                      {product.name}
-                    </h3>
-                    <div className="flex items-center space-x-3 mt-3">
-                      <span className="font-black text-xl text-gray-900">${Number(product.price).toLocaleString('es-CO')}</span>
-                      {product.originalPrice && (
-                        <span className="text-sm font-medium text-gray-400 line-through">${Number(product.originalPrice).toLocaleString('es-CO')}</span>
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {currentProducts.map((product: any) => (
+                <div key={product.id} className="bg-white border border-gray-100 rounded-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group flex flex-col">
+                  <Link href={`/producto/${product.handle}`} className="flex flex-col flex-grow">
+                    <div className="relative aspect-[4/5] bg-gray-50 overflow-hidden">
+                      {product.badge && (
+                        <div className="absolute top-3 left-3 bg-[#e4d2ef] text-gray-800 text-[10px] font-bold px-2.5 py-1 z-10 tracking-wider">
+                          {product.badge}
+                        </div>
                       )}
+                      <img 
+                        src={product.image} 
+                        alt={product.name} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      
+                      <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-[120%] group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
+                        <div className="w-full bg-[#e4d2ef] text-gray-800 py-3 rounded font-bold hover:bg-black hover:text-white transition-colors flex items-center justify-center shadow-lg">
+                          <ShoppingCart className="w-4 h-4 mr-2" />
+                          VER DETALLES
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </Link>
+                    
+                    <div className="p-5 flex flex-col flex-grow">
+                      <h3 className="font-semibold text-gray-800 group-hover:text-[#e4d2ef] transition-colors mb-2 line-clamp-2 min-h-[48px]">
+                        {product.name}
+                      </h3>
+                      <div className="flex items-center space-x-3 mt-3">
+                        <span className="font-black text-xl text-gray-900">${Number(product.price).toLocaleString('es-CO')}</span>
+                        {product.originalPrice && (
+                          <span className="text-sm font-medium text-gray-400 line-through">${Number(product.originalPrice).toLocaleString('es-CO')}</span>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              ))}
+            </div>
+
+            {/* Pagination UI */}
+            {totalPages > 1 && (
+              <div className="mt-16 flex justify-center items-center space-x-2">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
+                  <Link
+                    key={pageNumber}
+                    href={`/coleccion/${handle}?page=${pageNumber}`}
+                    className={`w-10 h-10 flex items-center justify-center rounded-full font-bold transition-colors ${
+                      currentPage === pageNumber
+                        ? 'bg-black text-white'
+                        : 'bg-gray-100 text-gray-600 hover:bg-[#e4d2ef] hover:text-gray-800'
+                    }`}
+                  >
+                    {pageNumber}
+                  </Link>
+                ))}
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
       </div>
     </div>
