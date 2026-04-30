@@ -43,6 +43,18 @@ export default function AddToCart({ product }: { product: any }) {
     };
 
     addItem(cartProduct, quantity);
+    
+    // 🎯 RASTREO: Enviar evento AddToCart a Facebook
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'AddToCart', {
+        content_ids: [selectedVariant.id],
+        content_name: product.title,
+        content_type: 'product',
+        value: selectedVariant.price * quantity,
+        currency: 'COP'
+      });
+    }
+
     toast.success("Producto agregado al carrito");
   };
 

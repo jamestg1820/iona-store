@@ -9,6 +9,7 @@ import AddToCart from "@/components/AddToCart";
 import StickyAddToCart from "@/components/StickyAddToCart";
 import { getProductByHandle, getProducts } from "@/lib/shopify";
 import { Star } from "lucide-react";
+import MetaProductView from "@/components/MetaProductView";
 
 export default async function ProductPage({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params;
@@ -27,6 +28,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
 
   return (
     <div className="min-h-screen bg-white pb-24 md:pb-0">
+      <MetaProductView product={{ id: product.id, title: product.title, price: price }} />
       {/* Breadcrumbs Estilo Totto */}
       <div className="max-w-7xl mx-auto px-4 py-6 lg:px-8">
         <nav className="flex items-center space-x-2 text-[11px] font-bold uppercase tracking-wider overflow-x-auto scrollbar-hide">

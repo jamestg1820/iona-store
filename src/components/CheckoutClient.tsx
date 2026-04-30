@@ -29,15 +29,17 @@ export default function CheckoutClient() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    // 🆔 Generar ID único para deduplicación
+    const eventId = 'pur_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     
     // Capturar datos del formulario
     const formData = new FormData(e.currentTarget);
     const nombres = formData.get('nombres') as string;
-    const apellidos = " "; // Shopify pide nombre y apellido, los mandamos juntos en firstName por ahora o los separamos
+    const apellidos = " "; 
     
     const payload = {
       items: items,
+      eventId: eventId, // Enviamos el ID al servidor
       customer: {
         firstName: nombres,
         lastName: apellidos,
@@ -69,7 +71,7 @@ export default function CheckoutClient() {
         description: "Tu pedido será despachado pronto.",
       });
 
-      // 🎯 Enviar evento Purchase a Facebook Pixel
+      // 🎯 Enviar evento Purchase a Facebook Pixel (Browser) con deduplicación
       if (typeof window !== 'undefined' && window.fbq) {
         window.fbq('track', 'Purchase', {
           value: subtotal,
@@ -82,7 +84,7 @@ export default function CheckoutClient() {
             item_price: item.product.price
           })),
           num_items: items.reduce((total, item) => total + item.quantity, 0)
-        });
+        }, { eventID: eventId }); // <--- CLAVE PARA DEDUPLICACIÓN
       }
       
       // Limpiar carrito y redirigir

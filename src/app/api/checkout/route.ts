@@ -101,6 +101,50 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Error al crear la orden en Shopify', details: data }, { status: response.status });
     }
 
+    // 🚀 4. ENVIAR A FACEBOOK CONVERSIONS API (CAPI)
+    try {
+      const accessToken = process.env.FB_ACCESS_TOKEN;
+      const pixelId = '803936628572207'; // Tu ID de Píxel
+
+      if (accessToken) {
+        // Función simple para hash SHA256 (Meta lo requiere para privacidad)
+        const crypto = require('crypto');
+        const hash = (val: string) => crypto.createHash('sha256').update(val.toLowerCase().trim()).digest('hex');
+
+        const fbPayload = {
+          data: [{
+            event_name: 'Purchase',
+            event_time: Math.floor(Date.now() / 1000),
+            event_id: body.eventId, // MISMO ID DEL CLIENTE PARA DEDUPLICACIÓN
+            action_source: 'website',
+            event_source_url: request.url,
+            user_data: {
+              ph: [hash(customer.phone)], // Teléfono hasheado
+              fn: [hash(firstName)],
+              ln: [hash(lastName)],
+              // Puedes añadir más datos aquí (em, ct, etc.) si los tienes
+            },
+            custom_data: {
+              value: items.reduce((total: number, item: any) => total + (item.product.price * item.quantity), 0),
+              currency: 'COP',
+              content_type: 'product',
+              content_ids: items.map((item: any) => item.product.id),
+              num_items: items.reduce((total: number, item: any) => total + item.quantity, 0)
+            }
+          }]
+        };
+
+        await fetch(`https://graph.facebook.com/v19.0/${pixelId}/events?access_token=${accessToken}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(fbPayload)
+        });
+      }
+    } catch (fbError) {
+      console.error("Error enviando a Facebook CAPI:", fbError);
+      // No bloqueamos el éxito de la orden si falla Facebook
+    }
+
     return NextResponse.json({ success: true, orderId: data.order.id });
     
   } catch (error) {
