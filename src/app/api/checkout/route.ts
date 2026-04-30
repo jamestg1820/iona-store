@@ -119,13 +119,15 @@ export async function POST(request: Request) {
             action_source: 'website',
             event_source_url: request.url,
             user_data: {
-              em: [hash(customer.email || '')], // Email hasheado (Clave para Meta)
-              ph: [hash(customer.phone || '')], // Teléfono hasheado
+              em: [hash(customer.email || '')],
+              ph: [hash(customer.phone || '')],
               fn: [hash(firstName)],
               ln: [hash(lastName)],
-              ct: [hash(shippingAddress.city || '')], // Ciudad
-              st: [hash(shippingAddress.province || '')], // Departamento/Estado
-              country: [hash('co')], // Colombia
+              ct: [hash(shippingAddress.city || '')],
+              st: [hash(shippingAddress.province || '')],
+              country: [hash('co')],
+              client_ip_address: request.headers.get('x-forwarded-for')?.split(',')[0] || '127.0.0.1',
+              client_user_agent: request.headers.get('user-agent') || '',
             },
             custom_data: {
               value: items.reduce((total: number, item: any) => total + (item.product.price * item.quantity), 0),
