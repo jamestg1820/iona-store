@@ -123,6 +123,23 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
               <AddToCart product={product} />
             </div>
 
+            {/* Botón de Ayuda WhatsApp */}
+            <div className="mt-3">
+              <a 
+                href={`https://wa.me/573123456789?text=Hola,%20necesito%20ayuda%20con%20este%20producto:%20${product.title}`}
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center justify-center w-full py-3 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 transition-all text-sm font-medium"
+              >
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
+                  alt="WhatsApp" 
+                  className="w-5 h-5 mr-3"
+                />
+                ¿Necesitas ayuda? Escríbenos
+              </a>
+            </div>
+
             {/* Acordeones */}
             <div className="border-t border-gray-200">
               <Accordion title="Descripción" defaultOpen={true}>
