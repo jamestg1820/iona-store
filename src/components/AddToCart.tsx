@@ -44,7 +44,10 @@ export default function AddToCart({ product }: { product: any }) {
 
     addItem(cartProduct, quantity);
     
-    // 🎯 RASTREO: Enviar evento AddToCart a Facebook
+    // 🎯 RASTREO: Enviar evento AddToCart a Facebook (Pixel + CAPI)
+    const eventId = `atc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+    // 1. Envío al Píxel (Navegador)
     if (typeof window !== 'undefined' && window.fbq) {
       window.fbq('track', 'AddToCart', {
         content_ids: [selectedVariant.id],
@@ -52,8 +55,45 @@ export default function AddToCart({ product }: { product: any }) {
         content_type: 'product',
         value: selectedVariant.price * quantity,
         currency: 'COP'
-      });
+      }, { eventID: eventId });
     }
+
+    // 2. Envío a CAPI (Servidor)
+    const sendCAPI = async () => {
+      try {
+        const getCookie = (name: string) => {
+          const value = `; ${document.cookie}`;
+          const parts = value.split(`; ${name}=`);
+          if (parts.length === 2) return parts.pop()?.split(';').shift();
+          return null;
+        };
+
+        await fetch('/api/meta-events', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            eventName: 'AddToCart',
+            eventId: eventId,
+            url: window.location.href,
+            clientData: {
+              fbp: getCookie('_fbp'),
+              fbc: getCookie('_fbc'),
+            },
+            customData: {
+              content_ids: [selectedVariant.id],
+              content_name: product.title,
+              content_type: 'product',
+              value: selectedVariant.price * quantity,
+              currency: 'COP'
+            }
+          })
+        });
+      } catch (err) {
+        console.error('CAPI Error:', err);
+      }
+    };
+
+    sendCAPI();
 
     toast.success("Producto agregado al carrito");
   };
