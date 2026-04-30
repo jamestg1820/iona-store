@@ -53,10 +53,13 @@ export async function POST(request: Request) {
     // 2. Crear el payload de la orden para la API REST de Shopify
     const orderPayload = {
       order: {
+        email: customer.email,
         line_items: lineItems,
         customer: {
           first_name: firstName,
           last_name: lastName,
+          email: customer.email,
+          phone: customer.phone
         },
         shipping_address: {
           first_name: firstName,
