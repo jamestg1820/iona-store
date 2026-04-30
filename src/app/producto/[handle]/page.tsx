@@ -59,7 +59,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
                 <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
               </svg>
             </div>
-            <span className="text-[11px] font-bold uppercase tracking-wide">Producto garantizado</span>
+            <span className="text-[11px] font-bold uppercase tracking-wide">PAGA AL RECIBIR, ENVIO GRATIS</span>
           </div>
         </div>
 
@@ -85,7 +85,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
                       <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                     </svg>
                   </div>
-                  <span className="text-sm font-bold uppercase tracking-wide">Producto garantizado</span>
+                  <span className="text-sm font-bold uppercase tracking-wide">PAGA AL RECIBIR, ENVIO GRATIS</span>
                 </div>
               </div>
               
