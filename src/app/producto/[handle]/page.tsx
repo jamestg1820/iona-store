@@ -126,7 +126,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
             {/* Botón de Ayuda WhatsApp */}
             <div className="mt-3">
               <a 
-                href={`https://wa.me/573123456789?text=Hola,%20necesito%20ayuda%20con%20este%20producto:%20${product.title}`}
+                href={`https://wa.me/573163516844?text=Hola,%20necesito%20ayuda%20con%20este%20producto:%20${product.title}`}
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center justify-center w-full py-3 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 transition-all text-sm font-medium"
