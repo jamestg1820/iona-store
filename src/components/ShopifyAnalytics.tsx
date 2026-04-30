@@ -26,6 +26,19 @@ export default function ShopifyAnalytics() {
         dangerouslySetInnerHTML={{
           __html: `
             (function() {
+              // 1. Configurar objetos globales de Shopify
+              window.Shopify = window.Shopify || {};
+              window.Shopify.shop = "${SHOP_DOMAIN}";
+              window.Shopify.locale = "es";
+              window.Shopify.currency = { active: 'COP', rate: '1.0' };
+              window.Shopify.theme = { name: "Headless", id: 1, theme_store_id: null, role: "main" };
+              
+              window.ShopifyAnalytics = window.ShopifyAnalytics || {};
+              window.ShopifyAnalytics.meta = window.ShopifyAnalytics.meta || {};
+              window.ShopifyAnalytics.meta.page = { pageType: 'home' };
+              window.ShopifyAnalytics.merchant_id = "${SHOP_ID}";
+
+              // 2. Inicializar Trekkie
               var trekkie = window.trekkie = window.trekkie || [];
               trekkie.methods = [
                 'track', 'identify', 'page', 'ready', 'alias', 'group', 'trackForm', 'trackClick', 'trackLink'
@@ -51,19 +64,21 @@ export default function ShopifyAnalytics() {
                 var first = document.getElementsByTagName('script')[0];
                 first.parentNode.insertBefore(script, first);
               };
+              
               trekkie.load({
                 "trekkie": {
                   "appName": "storefront",
                   "development": false,
                   "defaultDomain": "${SHOP_DOMAIN}"
+                },
+                "performance": {
+                  "navigationTimingApiMeasurementsEnabled": true,
+                  "navigationTimingApiMeasurementsSampleRate": 1
                 }
               });
-              
-              // Inicializar ShopifyAnalytics object
-              window.ShopifyAnalytics = window.ShopifyAnalytics || {};
-              window.ShopifyAnalytics.meta = window.ShopifyAnalytics.meta || {};
-              window.ShopifyAnalytics.meta.currency = 'COP';
-              window.ShopifyAnalytics.merchant_id = "${SHOP_ID}";
+
+              // Primer reporte de página
+              trekkie.page();
             })();
           `,
         }}
