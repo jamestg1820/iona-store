@@ -47,13 +47,13 @@ export default async function CollectionPage({
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
               {currentProducts.map((product: any) => (
                 <div key={product.id} className="bg-white border border-gray-100 rounded-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group flex flex-col">
                   <Link href={`/producto/${product.handle}`} className="flex flex-col flex-grow">
                     <div className="relative aspect-[4/5] bg-gray-50 overflow-hidden">
                       {product.badge && (
-                        <div className="absolute top-3 left-3 bg-[#e4d2ef] text-gray-800 text-[10px] font-bold px-2.5 py-1 z-10 tracking-wider">
+                        <div className="absolute top-2 left-2 bg-[#e4d2ef] text-gray-800 text-[8px] md:text-[10px] font-bold px-1.5 py-0.5 md:px-2.5 md:py-1 z-10 tracking-wider">
                           {product.badge}
                         </div>
                       )}
@@ -63,22 +63,22 @@ export default async function CollectionPage({
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                       
-                      <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-[120%] group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
-                        <div className="w-full bg-[#e4d2ef] text-gray-800 py-3 rounded font-bold hover:bg-black hover:text-white transition-colors flex items-center justify-center shadow-lg">
-                          <ShoppingCart className="w-4 h-4 mr-2" />
-                          VER DETALLES
+                      <div className="absolute bottom-0 left-0 right-0 p-2 md:p-4 translate-y-[120%] group-hover:translate-y-0 transition-transform duration-300 ease-in-out hidden md:block">
+                        <div className="w-full bg-[#e4d2ef] text-gray-800 py-2 md:py-3 rounded font-bold hover:bg-black hover:text-white transition-colors flex items-center justify-center shadow-lg text-xs md:text-sm">
+                          <ShoppingCart className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+                          DETALLES
                         </div>
                       </div>
                     </div>
                     
-                    <div className="p-5 flex flex-col flex-grow">
-                      <h3 className="font-semibold text-gray-800 group-hover:text-[#e4d2ef] transition-colors mb-2 line-clamp-2 min-h-[48px]">
+                    <div className="p-3 md:p-5 flex flex-col flex-grow">
+                      <h3 className="font-semibold text-gray-800 group-hover:text-[#e4d2ef] transition-colors mb-1 md:mb-2 line-clamp-2 min-h-[32px] md:min-h-[48px] text-xs md:text-base">
                         {product.name}
                       </h3>
-                      <div className="flex items-center space-x-3 mt-3">
-                        <span className="font-black text-xl text-gray-900">${Number(product.price).toLocaleString('es-CO')}</span>
+                      <div className="flex flex-col md:flex-row md:items-center md:space-x-3 mt-1 md:mt-3">
+                        <span className="font-black text-sm md:text-xl text-gray-900">${Number(product.price).toLocaleString('es-CO')}</span>
                         {product.originalPrice && (
-                          <span className="text-sm font-medium text-gray-400 line-through">${Number(product.originalPrice).toLocaleString('es-CO')}</span>
+                          <span className="text-[10px] md:text-sm font-medium text-gray-400 line-through">${Number(product.originalPrice).toLocaleString('es-CO')}</span>
                         )}
                       </div>
                     </div>
