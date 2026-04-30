@@ -5,7 +5,7 @@ const categories = [
   { name: 'Mujer', image: 'https://tottoco.vtexassets.com/assets/vtex.file-manager-graphql/images/21e17950-ebe0-4ddf-acc6-c47c5ed052b6___4d5d524ac0436da604f684fff9521ea6.svg', href: '/coleccion/mujer' },
   { name: 'Hombre', image: 'https://tottoco.vtexassets.com/assets/vtex.file-manager-graphql/images/9260cebc-903a-4ce1-b18b-1017a9ab5a06___f3d48c444d008d1ac359028d9319d9a0.svg', href: '/coleccion/hombre' },
   { name: 'Carteras', image: 'https://tottoco.vtexassets.com/assets/vtex.file-manager-graphql/images/53a43979-0a5d-43f0-ba2e-37d21c7ee949___c782564e58912cd706779e2aeada4565.svg', href: '/coleccion/carteras' },
-  { name: 'Viaje', image: 'https://images.unsplash.com/photo-1552858725-2758b5fb1286?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', href: '/coleccion/viaje' },
+  { name: 'Viaje', image: 'https://tottoco.vtexassets.com/assets/vtex.file-manager-graphql/images/c90eb224-8a2e-46a6-8859-cad39ba42533___54b22aec9387809cf8ff0e3b3fb58849.svg', href: '/coleccion/viaje' },
   { name: 'Bolsos', image: 'https://images.unsplash.com/photo-1591561954557-26941169b49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', href: '/coleccion/bolsos' },
 ];
 
