@@ -35,7 +35,8 @@ export async function POST(request: NextRequest) {
           external_id: clientData?.email ? [hash(clientData.email)] : undefined,
         },
         custom_data: customData
-      }]
+      }],
+      test_event_code: "TEST62090"
     };
 
     const response = await fetch(`https://graph.facebook.com/v19.0/${pixelId}/events?access_token=${accessToken}`, {
