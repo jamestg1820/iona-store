@@ -14,26 +14,35 @@ export default function HeroBanner() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 lg:px-8 h-full flex items-center">
-        <div className="max-w-lg text-white">
-          <span className="inline-block py-1.5 px-4 rounded-full bg-[#e4d2ef] text-gray-800 text-xs font-bold tracking-widest mb-6">
+      {/* Content Container */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 lg:px-8 h-full">
+        {/* Badge - Arriba a la izquierda */}
+        <div className="absolute top-6 left-4 lg:left-8">
+          <span className="inline-block py-1.5 px-4 rounded-full bg-[#e4d2ef] text-gray-800 text-[10px] md:text-xs font-bold tracking-widest shadow-sm">
             NUEVA COLECCIÓN
           </span>
-          <h1 className="hidden md:block text-4xl md:text-5xl lg:text-6xl font-heading mb-6 leading-tight tracking-tight uppercase">
-            FANS DE LA<br />PRACTICIDAD
-          </h1>
-          <p className="hidden md:block text-sm md:text-base mb-10 font-medium text-gray-200">
-            Más funcionalidad, más color e innovación para ti. Descubre los nuevos diseños con múltiples compartimentos.
-          </p>
-          <div className="flex flex-col sm:flex-row">
-            <Link 
-              href="/coleccion/Catalogo" 
-              className="bg-[#e4d2ef] text-gray-800 px-6 py-2.5 md:px-8 md:py-4 rounded-full font-bold hover:bg-black hover:text-white transition-colors text-center text-sm md:text-base shadow-lg"
-            >
-              CATÁLOGO
-            </Link>
+        </div>
+
+        {/* Desktop Text - Centro izquierda (Solo visible en computadoras) */}
+        <div className="hidden md:flex h-full items-center">
+          <div className="max-w-lg text-white">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading mb-6 leading-tight tracking-tight uppercase drop-shadow-md">
+              FANS DE LA<br />PRACTICIDAD
+            </h1>
+            <p className="text-sm md:text-base mb-10 font-medium text-gray-100 drop-shadow-sm max-w-sm">
+              Más funcionalidad, más color e innovación para ti.
+            </p>
           </div>
+        </div>
+
+        {/* Button - Abajo centrado */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full flex justify-center px-4">
+          <Link 
+            href="/coleccion/Catalogo" 
+            className="bg-[#e4d2ef] text-gray-800 px-10 py-3.5 md:px-12 md:py-4 rounded-full font-bold hover:bg-black hover:text-white transition-all hover:scale-105 text-center text-sm md:text-base shadow-xl"
+          >
+            CATÁLOGO
+          </Link>
         </div>
       </div>
     </div>
