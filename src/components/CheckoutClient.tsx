@@ -43,6 +43,7 @@ export default function CheckoutClient() {
       customer: {
         firstName: nombres,
         lastName: apellidos,
+        email: formData.get('email'), // Nuevo campo
         phone: formData.get('celular'),
       },
       shippingAddress: {
@@ -143,6 +144,17 @@ export default function CheckoutClient() {
               minLength={5}
               className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#B5BCE5] focus:ring-2 focus:ring-[#B5BCE5]/20 outline-none transition-all bg-gray-50 focus:bg-white"
               placeholder="Ej. María Pérez"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico *</label>
+            <input 
+              name="email"
+              type="email" 
+              required
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#B5BCE5] focus:ring-2 focus:ring-[#B5BCE5]/20 outline-none transition-all bg-gray-50 focus:bg-white"
+              placeholder="ejemplo@correo.com"
             />
           </div>
 
