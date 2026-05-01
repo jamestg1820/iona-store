@@ -135,7 +135,7 @@ export default function Navbar() {
               
               <div className="pt-6 mt-2 border-t border-gray-100">
                 <Link 
-                  href="https://wa.me/573000000000" 
+                  href="https://wa.me/573163516844" 
                   target="_blank"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="flex items-center space-x-3 text-[13px] font-black tracking-widest text-[#25D366] hover:opacity-80 transition-opacity"

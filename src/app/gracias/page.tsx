@@ -91,7 +91,7 @@ function GraciasContent() {
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link 
-              href="https://wa.me/573000000000" 
+              href="https://wa.me/573163516844" 
               target="_blank"
               className="w-full sm:w-auto bg-white border-2 border-gray-100 text-gray-500 px-10 py-4 rounded-full font-black text-sm tracking-widest hover:border-black hover:text-black transition-all flex items-center justify-center gap-3"
             >
