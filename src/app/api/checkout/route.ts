@@ -57,11 +57,6 @@ export async function POST(request: Request) {
     const orderPayload: any = {
       order: {
         line_items: lineItems,
-        customer: {
-          first_name: firstName,
-          last_name: lastName,
-          phone: formattedPhone
-        },
         shipping_address: {
           first_name: firstName,
           last_name: lastName,
@@ -90,7 +85,6 @@ export async function POST(request: Request) {
 
     if (customer.email) {
       orderPayload.order.email = customer.email;
-      orderPayload.order.customer.email = customer.email;
     }
 
     // 3. Hacer la petición a Shopify Admin API
