@@ -2,6 +2,8 @@
 
 import { useEffect } from 'react';
 
+import { sendGAEvent } from '@next/third-parties/google';
+
 interface MetaProductViewProps {
   product: {
     id: string;
@@ -14,6 +16,20 @@ export default function MetaProductView({ product }: MetaProductViewProps) {
   useEffect(() => {
     const eventId = `vc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
+    // 0. Envío a Google Analytics 4 (Navegador)
+    sendGAEvent('event', 'view_item', {
+      currency: 'COP',
+      value: product.price,
+      items: [
+        {
+          item_id: product.id,
+          item_name: product.title,
+          price: product.price,
+          quantity: 1
+        }
+      ]
+    });
+
     // 1. Envío al Píxel (Navegador)
     if (typeof window !== 'undefined' && window.fbq) {
       window.fbq('track', 'ViewContent', {

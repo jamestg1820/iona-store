@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { ShieldCheck, Truck } from "lucide-react";
+import { sendGAEvent } from '@next/third-parties/google';
 
 const DEPARTAMENTOS = [
   "Amazonas", "Antioquia", "Arauca", "Atlántico", "Bolívar", "Boyacá", 
@@ -100,6 +101,19 @@ export default function CheckoutClient() {
           num_items: items.reduce((total, item) => total + item.quantity, 0)
         }, { eventID: eventId }); // <--- CLAVE PARA DEDUPLICACIÓN
       }
+
+      // 🎯 Enviar evento Purchase a Google Analytics 4
+      sendGAEvent('event', 'purchase', {
+        transaction_id: eventId,
+        value: subtotal,
+        currency: 'COP',
+        items: items.map(item => ({
+          item_id: item.product.id,
+          item_name: item.product.name,
+          price: item.product.price,
+          quantity: item.quantity
+        }))
+      });
       
       // Limpiar carrito y redirigir
       useCartStore.getState().items.forEach(item => useCartStore.getState().removeItem(item.id));

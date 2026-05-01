@@ -4,6 +4,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useCartStore } from "@/store/cartStore";
 
+import { sendGAEvent } from '@next/third-parties/google';
+
 export default function AddToCart({ product }: { product: any }) {
   const [quantity, setQuantity] = useState(1);
   const [selectedOptions, setSelectedOptions] = useState(() => {
@@ -44,6 +46,20 @@ export default function AddToCart({ product }: { product: any }) {
 
     addItem(cartProduct, quantity);
     
+    // 🎯 RASTREO: Enviar evento AddToCart a Google Analytics 4
+    sendGAEvent('event', 'add_to_cart', {
+      currency: 'COP',
+      value: selectedVariant.price * quantity,
+      items: [
+        {
+          item_id: selectedVariant.id,
+          item_name: product.title || product.name,
+          price: selectedVariant.price,
+          quantity: quantity
+        }
+      ]
+    });
+
     // 🎯 RASTREO: Enviar evento AddToCart a Facebook (Pixel + CAPI)
     const eventId = `atc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
