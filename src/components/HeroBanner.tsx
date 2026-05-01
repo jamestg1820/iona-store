@@ -6,7 +6,7 @@ export default function HeroBanner() {
       {/* Background Image - Using a placeholder for now */}
       <div className="absolute inset-0">
         <img 
-          src="/images/hero-banner.png" 
+          src="/images/hero-banner-new.png" 
           alt="Nueva Colección Totto" 
           className="w-full h-full object-cover object-center"
         />
