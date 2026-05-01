@@ -37,11 +37,14 @@ export async function POST(request: Request) {
     const firstName = nameParts[0] || 'Cliente';
     const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : 'Headless';
 
+    // Asegurar formato de teléfono E.164 (Ej: +57...)
+    const rawPhone = (customer.phone || '').toString().trim();
+    const formattedPhone = rawPhone.startsWith('+') ? rawPhone : (rawPhone ? `+57${rawPhone}` : undefined);
+
     // 3. Construir los line items para la orden
     const lineItems = items.map((item: any) => {
-      // Necesitamos el ID del variant. Si el ID viene completo de GraphQL, lo extraemos.
-      // Ejemplo: "gid://shopify/ProductVariant/44528874651926" -> "44528874651926"
-      const variantIdMatch = item.product.variantId?.match(/\d+$/);
+      const idStr = item.product.variantId?.toString() || item.product.id?.toString() || '';
+      const variantIdMatch = idStr.match(/\d+$/);
       const variantId = variantIdMatch ? parseInt(variantIdMatch[0], 10) : null;
 
       return {
@@ -50,16 +53,14 @@ export async function POST(request: Request) {
       };
     });
 
-    // 2. Crear el payload de la orden para la API REST de Shopify
-    const orderPayload = {
+    // 4. Crear el payload de la orden para la API REST de Shopify
+    const orderPayload: any = {
       order: {
-        email: customer.email,
         line_items: lineItems,
         customer: {
           first_name: firstName,
           last_name: lastName,
-          email: customer.email,
-          phone: customer.phone
+          phone: formattedPhone
         },
         shipping_address: {
           first_name: firstName,
@@ -68,7 +69,7 @@ export async function POST(request: Request) {
           city: shippingAddress.city,
           province: shippingAddress.province, // Departamento
           country: 'CO',
-          phone: customer.phone,
+          phone: formattedPhone,
           company: shippingAddress.neighborhood // Guardamos el barrio aquí temporalmente
         },
         billing_address: {
@@ -78,7 +79,7 @@ export async function POST(request: Request) {
           city: shippingAddress.city,
           province: shippingAddress.province,
           country: 'CO',
-          phone: customer.phone
+          phone: formattedPhone
         },
         financial_status: "pending",
         payment_gateway_names: ["Pago Contra Entrega"],
@@ -86,6 +87,11 @@ export async function POST(request: Request) {
         tags: "pago-contra-entrega, creado-headless"
       }
     };
+
+    if (customer.email) {
+      orderPayload.order.email = customer.email;
+      orderPayload.order.customer.email = customer.email;
+    }
 
     // 3. Hacer la petición a Shopify Admin API
     const response = await fetch(`https://${domain}/admin/api/2024-01/orders.json`, {
@@ -101,7 +107,15 @@ export async function POST(request: Request) {
 
     if (!response.ok) {
       console.error("Error creando orden en Shopify:", data);
-      return NextResponse.json({ error: 'Error al crear la orden en Shopify', details: data }, { status: response.status });
+      let errorMessage = 'Error al crear la orden en Shopify';
+      if (data.errors) {
+        if (typeof data.errors === 'string') {
+          errorMessage = data.errors;
+        } else if (typeof data.errors === 'object') {
+          errorMessage = JSON.stringify(data.errors);
+        }
+      }
+      return NextResponse.json({ error: errorMessage, details: data }, { status: response.status });
     }
 
     // 🚀 4. ENVIAR A FACEBOOK CONVERSIONS API (CAPI)
