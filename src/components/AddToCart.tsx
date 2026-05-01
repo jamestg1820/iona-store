@@ -99,49 +99,51 @@ export default function AddToCart({ product }: { product: any }) {
   };
 
   return (
-    <div className="flex flex-col space-y-8">
+    <div className="flex flex-col">
       {/* Opciones del Producto (Lista de Colores) */}
-      {product.options && product.options
-        .filter((option: any) => !(option.name === 'Title' && option.values.includes('Default Title')))
-        .map((option: any) => {
-          const isColor = option.name.toLowerCase().includes('color');
-          return (
-            <div key={option.name} className="flex flex-col space-y-4">
-              <h3 className="text-sm font-black text-gray-900 uppercase tracking-widest">
-                SELECCIONA {option.name}: <span className="font-light text-gray-500 ml-2">{selectedOptions[option.name]}</span>
-              </h3>
-              <div className="flex flex-col space-y-2">
-                {option.values.map((value: string) => (
-                  <button
-                    key={value}
-                    onClick={() => setSelectedOptions(prev => ({ ...prev, [option.name]: value }))}
-                    className={`flex items-center w-full px-5 py-4 rounded-xl border-2 transition-all duration-300 text-left group ${
-                      selectedOptions[option.name] === value 
-                        ? 'border-black bg-black text-white shadow-lg transform scale-[1.01]' 
-                        : 'border-gray-100 bg-white text-gray-700 hover:border-gray-300'
-                    }`}
-                  >
-                    <div className={`w-5 h-5 rounded-full border-2 mr-4 flex items-center justify-center transition-all duration-300 ${
-                      selectedOptions[option.name] === value 
-                        ? 'border-white bg-white' 
-                        : 'border-gray-300 bg-transparent group-hover:border-gray-400'
-                    }`}>
+      <div className="order-2 md:order-1 flex flex-col space-y-8 mt-8 md:mt-0">
+        {product.options && product.options
+          .filter((option: any) => !(option.name === 'Title' && option.values.includes('Default Title')))
+          .map((option: any) => {
+            const isColor = option.name.toLowerCase().includes('color');
+            return (
+              <div key={option.name} className="flex flex-col space-y-4">
+                <h3 className="text-sm font-black text-gray-900 uppercase tracking-widest">
+                  SELECCIONA {option.name}: <span className="font-light text-gray-500 ml-2">{selectedOptions[option.name]}</span>
+                </h3>
+                <div className="flex flex-col space-y-2">
+                  {option.values.map((value: string) => (
+                    <button
+                      key={value}
+                      onClick={() => setSelectedOptions(prev => ({ ...prev, [option.name]: value }))}
+                      className={`flex items-center w-full px-5 py-4 rounded-xl border-2 transition-all duration-300 text-left group ${
+                        selectedOptions[option.name] === value 
+                          ? 'border-black bg-black text-white shadow-lg transform scale-[1.01]' 
+                          : 'border-gray-100 bg-white text-gray-700 hover:border-gray-300'
+                      }`}
+                    >
+                      <div className={`w-5 h-5 rounded-full border-2 mr-4 flex items-center justify-center transition-all duration-300 ${
+                        selectedOptions[option.name] === value 
+                          ? 'border-white bg-white' 
+                          : 'border-gray-300 bg-transparent group-hover:border-gray-400'
+                      }`}>
+                        {selectedOptions[option.name] === value && (
+                          <div className="w-2.5 h-2.5 rounded-full bg-black animate-in fade-in zoom-in duration-300" />
+                        )}
+                      </div>
+                      <span className="text-[13px] font-black uppercase tracking-widest">{value}</span>
                       {selectedOptions[option.name] === value && (
-                        <div className="w-2.5 h-2.5 rounded-full bg-black animate-in fade-in zoom-in duration-300" />
+                        <span className="ml-auto text-[10px] font-bold opacity-60">SELECCIONADO</span>
                       )}
-                    </div>
-                    <span className="text-[13px] font-black uppercase tracking-widest">{value}</span>
-                    {selectedOptions[option.name] === value && (
-                      <span className="ml-auto text-[10px] font-bold opacity-60">SELECCIONADO</span>
-                    )}
-                  </button>
-                ))}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+      </div>
 
-      <div className="flex flex-col items-center w-full space-y-4 pt-2">
+      <div className="order-1 md:order-2 flex flex-col items-center w-full space-y-4 md:mt-8">
         {/* Selector de Cantidad Estilo Pill (A la izquierda) */}
         <div className="w-full flex justify-start">
           <div className="flex items-center justify-between border border-gray-200 rounded-full w-[100px] px-3 py-2 bg-gray-50/50">
