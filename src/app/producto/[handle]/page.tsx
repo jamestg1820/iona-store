@@ -97,7 +97,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
                   ))}
                 </div>
                 <span className="text-xs text-gray-400 ml-2">
-                  {((product.id.split('').reduce((a, b) => a + b.charCodeAt(0), 0)) % 91) + 30} Reseñas
+                  {((product.id.split('').reduce((a: number, b: string) => a + b.charCodeAt(0), 0)) % 91) + 30} Reseñas
                 </span>
               </div>
 
