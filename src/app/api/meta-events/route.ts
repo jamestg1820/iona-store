@@ -19,6 +19,7 @@ export async function POST(request: NextRequest) {
     const userAgent = request.headers.get('user-agent') || '';
 
     const fbPayload = {
+      test_event_code: 'TEST79025',
       data: [{
         event_name: eventName,
         event_time: Math.floor(Date.now() / 1000),
