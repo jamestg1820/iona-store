@@ -10,7 +10,14 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const totalItems = items.reduce((total, item) => total + item.quantity, 0);
 
-  const navItems = ['DESCUBRE', 'MORRALES', 'MUJER', 'HOMBRE', 'NIÑA', 'NIÑO', 'VIAJE', 'MASCOTAS', 'PERSONAJES', 'ACCESORIOS'];
+  const navItems = [
+    { name: 'MORRALES', href: '/coleccion/morrales' },
+    { name: 'MUJER', href: '/coleccion/mujer' },
+    { name: 'HOMBRE', href: '/coleccion/hombre' },
+    { name: 'CARTERAS', href: '/coleccion/carteras' },
+    { name: 'VIAJE', href: '/coleccion/viaje' },
+    { name: 'BOLSOS', href: '/coleccion/bolsos' }
+  ];
 
   return (
     <header className="w-full sticky top-0 z-50 bg-white border-b border-gray-100">
@@ -91,11 +98,11 @@ export default function Navbar() {
       <nav className="hidden md:flex justify-center space-x-8 pb-4">
         {navItems.map((item) => (
           <Link 
-            key={item} 
-            href={`/coleccion/${item.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`} 
+            key={item.name} 
+            href={item.href} 
             className="text-[11px] font-black tracking-widest text-gray-900 hover:text-[#e4d2ef] transition-colors"
           >
-            {item}
+            {item.name}
           </Link>
         ))}
       </nav>
@@ -124,12 +131,12 @@ export default function Navbar() {
               
               {navItems.map((item) => (
                 <Link 
-                  key={item} 
-                  href={`/coleccion/${item.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`}
+                  key={item.name} 
+                  href={item.href}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="text-[13px] font-black tracking-widest text-gray-900 hover:text-[#e4d2ef] transition-colors"
                 >
-                  {item}
+                  {item.name}
                 </Link>
               ))}
               
