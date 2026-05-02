@@ -175,11 +175,10 @@ export default function CheckoutClient() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico (Opcional)</label>
             <input 
               name="email"
               type="email" 
-              required
               className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#B5BCE5] focus:ring-2 focus:ring-[#B5BCE5]/20 outline-none transition-all bg-gray-50 focus:bg-white"
               placeholder="ejemplo@correo.com"
             />
@@ -214,12 +213,10 @@ export default function CheckoutClient() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Barrio *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Barrio (Opcional)</label>
               <input 
                 name="barrio"
                 type="text" 
-                required
-                minLength={4}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#B5BCE5] focus:ring-2 focus:ring-[#B5BCE5]/20 outline-none transition-all bg-gray-50 focus:bg-white"
                 placeholder="Nombre de tu barrio"
               />
