@@ -30,6 +30,9 @@ export default function CheckoutClient() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isSubmitting) return; // Prevenir doble clic
+    setIsSubmitting(true);
+    
     // 🆔 Generar ID único para deduplicación
     const eventId = 'pur_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     
