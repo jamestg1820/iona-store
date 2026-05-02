@@ -10,6 +10,7 @@ import StickyAddToCart from "@/components/StickyAddToCart";
 import { getProductByHandle, getProducts } from "@/lib/shopify";
 import { Star } from "lucide-react";
 import MetaProductView from "@/components/MetaProductView";
+import ProductReviews from "@/components/ProductReviews";
 
 export default async function ProductPage({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params;
@@ -164,6 +165,8 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
                 </ul>
               </Accordion>
             </div>
+
+            <ProductReviews productHandle={product.handle} />
 
             {/* Botón Ver Catálogo */}
             <div className="mt-8">
