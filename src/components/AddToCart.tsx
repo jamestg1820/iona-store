@@ -125,8 +125,7 @@ export default function AddToCart({ product }: { product: any }) {
       variantId: selectedVariant.id,
       selectedOptions: selectedOptions
     };
-
-    addItem(cartProduct, quantity);
+    addItem(cartProduct, quantity, false);
     
     // 🎯 RASTREO: Enviar evento InitiateCheckout a Google Analytics 4
     sendGAEvent('event', 'begin_checkout', {

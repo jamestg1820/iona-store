@@ -12,7 +12,7 @@ interface CartState {
   openCart: () => void;
   closeCart: () => void;
   toggleCart: () => void;
-  addItem: (product: any, quantity: number) => void;
+  addItem: (product: any, quantity: number, openCart?: boolean) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
 }
@@ -23,7 +23,7 @@ export const useCartStore = create<CartState>((set) => ({
   openCart: () => set({ isOpen: true }),
   closeCart: () => set({ isOpen: false }),
   toggleCart: () => set((state) => ({ isOpen: !state.isOpen })),
-  addItem: (product, quantity) => set((state) => {
+  addItem: (product, quantity, openCart = true) => set((state) => {
     // Rastrear evento en Facebook Pixel
     if (typeof window !== 'undefined' && window.fbq) {
       window.fbq('track', 'AddToCart', {
@@ -41,12 +41,12 @@ export const useCartStore = create<CartState>((set) => ({
         items: state.items.map(item => 
           item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
         ),
-        isOpen: true
+        isOpen: openCart ? true : state.isOpen
       };
     }
     return {
       items: [...state.items, { id: product.id, product, quantity }],
-      isOpen: true
+      isOpen: openCart ? true : state.isOpen
     };
   }),
   removeItem: (id) => set((state) => ({
