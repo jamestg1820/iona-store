@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { useCartStore } from "@/store/cartStore";
-
+import { useRouter } from "next/navigation";
 import { sendGAEvent } from '@next/third-parties/google';
 
 export default function AddToCart({ product }: { product: any }) {
@@ -19,6 +19,7 @@ export default function AddToCart({ product }: { product: any }) {
   });
 
   const addItem = useCartStore((state) => state.addItem);
+  const router = useRouter();
 
   const handleDecrease = () => {
     if (quantity > 1) setQuantity(quantity - 1);
@@ -114,6 +115,90 @@ export default function AddToCart({ product }: { product: any }) {
     toast.success("Producto agregado al carrito");
   };
 
+  const handleBuyNow = () => {
+    const cartProduct = {
+      id: selectedVariant.id,
+      handle: product.handle || '',
+      name: product.title || product.name,
+      price: selectedVariant.price,
+      image: selectedVariant.image?.url || (product.images ? product.images[0]?.url : product.image),
+      variantId: selectedVariant.id,
+      selectedOptions: selectedOptions
+    };
+
+    addItem(cartProduct, quantity);
+    
+    // 🎯 RASTREO: Enviar evento InitiateCheckout a Google Analytics 4
+    sendGAEvent('event', 'begin_checkout', {
+      currency: 'COP',
+      value: selectedVariant.price * quantity,
+      items: [
+        {
+          item_id: selectedVariant.id,
+          item_name: product.title || product.name,
+          price: selectedVariant.price,
+          quantity: quantity
+        }
+      ]
+    });
+
+    // 🎯 RASTREO: Enviar evento InitiateCheckout a Facebook (Pixel + CAPI)
+    const eventId = `ic_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+    // 1. Envío al Píxel (Navegador)
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'InitiateCheckout', {
+        content_ids: [selectedVariant.id],
+        content_name: product.title,
+        content_type: 'product',
+        value: selectedVariant.price * quantity,
+        currency: 'COP'
+      }, { eventID: eventId });
+    }
+
+    // 2. Envío a CAPI (Servidor)
+    const sendCAPI = async () => {
+      try {
+        const getCookie = (name: string) => {
+          const value = `; ${document.cookie}`;
+          const parts = value.split(`; ${name}=`);
+          if (parts.length === 2) return parts.pop()?.split(';').shift();
+          return null;
+        };
+
+        // No esperamos (await) el fetch para no bloquear la redirección
+        fetch('/api/meta-events', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          keepalive: true, // Importante para que el request sobreviva a la navegación
+          body: JSON.stringify({
+            eventName: 'InitiateCheckout',
+            eventId: eventId,
+            url: window.location.href,
+            clientData: {
+              fbp: getCookie('_fbp'),
+              fbc: getCookie('_fbc'),
+            },
+            customData: {
+              content_ids: [selectedVariant.id],
+              content_name: product.title,
+              content_type: 'product',
+              value: selectedVariant.price * quantity,
+              currency: 'COP'
+            }
+          })
+        }).catch(err => console.error('CAPI Error:', err));
+      } catch (err) {
+        console.error('CAPI Error:', err);
+      }
+    };
+
+    sendCAPI();
+
+    // Redirigir al checkout
+    router.push('/checkout');
+  };
+
   return (
     <div className="flex flex-col">
       {/* Opciones del Producto (Lista de Colores) */}
@@ -169,7 +254,15 @@ export default function AddToCart({ product }: { product: any }) {
           </div>
         </div>
 
-        {/* Botón de Agregar Centrado */}
+        {/* Botón de Comprar (Checkout Inmediato) */}
+        <button 
+          onClick={handleBuyNow}
+          className="w-full bg-black text-white py-4 rounded-full font-black tracking-[0.2em] text-sm hover:bg-[#e4d2ef] hover:text-black transition-all duration-300 shadow-xl active:scale-[0.98] mx-auto border-2 border-black"
+        >
+          COMPRAR AHORA
+        </button>
+
+        {/* Botón de Agregar al carrito */}
         <button 
           onClick={handleAddToCart}
           data-add-to-cart
