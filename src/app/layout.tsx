@@ -5,7 +5,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
 import { Toaster } from "sonner";
-import Script from "next/script";
 
 import FacebookPixel from "@/components/FacebookPixel";
 import { Suspense } from "react";
@@ -36,23 +35,24 @@ export default function RootLayout({
       lang="es"
       className={`${inter.variable} ${italiana.variable} h-full antialiased`}
     >
+      <head>
+        {/* Google tag (gtag.js) */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-VR4XS3437H"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-VR4XS3437H');
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-[#F5F5F5]">
         <Suspense fallback={null}>
           <FacebookPixel />
         </Suspense>
-        {/* Google Analytics 4 - G-VR4XS3437H */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-VR4XS3437H"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-VR4XS3437H');
-          `}
-        </Script>
         <Navbar />
         <main className="flex-grow bg-white w-full mx-auto">
           {children}
