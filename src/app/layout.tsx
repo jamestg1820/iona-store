@@ -5,9 +5,9 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
 import { Toaster } from "sonner";
+import Script from "next/script";
 
 import FacebookPixel from "@/components/FacebookPixel";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import { Suspense } from "react";
 
 const inter = Inter({
@@ -40,9 +40,19 @@ export default function RootLayout({
         <Suspense fallback={null}>
           <FacebookPixel />
         </Suspense>
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
-        )}
+        {/* Google Analytics 4 - G-VR4XS3437H */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-VR4XS3437H"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-VR4XS3437H');
+          `}
+        </Script>
         <Navbar />
         <main className="flex-grow bg-white w-full mx-auto">
           {children}
