@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
 import { Toaster } from "sonner";
-import Script from "next/script";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 import FacebookPixel from "@/components/FacebookPixel";
 import { Suspense } from "react";
@@ -37,19 +37,6 @@ export default function RootLayout({
       className={`${inter.variable} ${italiana.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#F5F5F5]">
-        {/* Google Analytics 4 */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-VR4XS3437H"
-          strategy="beforeInteractive"
-        />
-        <Script id="ga4-init" strategy="beforeInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-VR4XS3437H');
-          `}
-        </Script>
         <Suspense fallback={null}>
           <FacebookPixel />
         </Suspense>
@@ -61,6 +48,8 @@ export default function RootLayout({
         <CartDrawer />
         <Toaster position="bottom-right" toastOptions={{ style: { background: '#111827', color: '#fff', border: 'none' } }} />
       </body>
+      {/* GA4 — fuera del body para que Next.js lo inyecte en el head correctamente */}
+      <GoogleAnalytics gaId="G-VR4XS3437H" />
     </html>
   );
 }
