@@ -57,20 +57,23 @@ export async function POST(request: Request) {
     const orderPayload: any = {
       order: {
         line_items: lineItems,
+        // ✅ Teléfono a nivel de cliente (aparece en "Información de contacto")
+        phone: formattedPhone,
         shipping_address: {
           first_name: firstName,
           last_name: lastName,
           address1: shippingAddress.address1,
+          address2: shippingAddress.neighborhood || '', // ✅ Barrio en campo correcto
           city: shippingAddress.city,
           province: shippingAddress.province, // Departamento
           country: 'CO',
           phone: formattedPhone,
-          company: shippingAddress.neighborhood // Guardamos el barrio aquí temporalmente
         },
         billing_address: {
           first_name: firstName,
           last_name: lastName,
           address1: shippingAddress.address1,
+          address2: shippingAddress.neighborhood || '',
           city: shippingAddress.city,
           province: shippingAddress.province,
           country: 'CO',
