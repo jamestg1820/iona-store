@@ -6,11 +6,10 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { ShieldCheck, Truck } from "lucide-react";
 
-// Extender window para TypeScript
+// Extender window para TypeScript (fbq ya está declarado en FacebookPixel.tsx)
 declare global {
   interface Window {
     gtag?: (...args: any[]) => void;
-    // fbq ya está declarado en FacebookPixel.tsx
   }
 }
 
@@ -122,8 +121,8 @@ export default function CheckoutClient() {
       }));
 
       // Limpiar carrito
-      useCartStore.getState().clearCart?.() || 
-        useCartStore.getState().items.forEach(i => useCartStore.getState().removeItem(i.id));
+      const cartItems = [...useCartStore.getState().items];
+      cartItems.forEach(i => useCartStore.getState().removeItem(i.id));
 
       // Parámetros para la página de gracias
       const params = new URLSearchParams({
