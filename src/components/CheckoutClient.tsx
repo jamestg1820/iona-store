@@ -10,7 +10,7 @@ import { ShieldCheck, Truck } from "lucide-react";
 declare global {
   interface Window {
     gtag?: (...args: any[]) => void;
-    fbq?: (...args: any[]) => void;
+    // fbq ya está declarado en FacebookPixel.tsx
   }
 }
 
