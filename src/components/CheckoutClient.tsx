@@ -5,7 +5,14 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { ShieldCheck, Truck } from "lucide-react";
-import { sendGAEvent } from '@next/third-parties/google';
+
+// Extender window para TypeScript
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void;
+    fbq?: (...args: any[]) => void;
+  }
+}
 
 const DEPARTAMENTOS = [
   "Amazonas", "Antioquia", "Arauca", "Atlántico", "Bolívar", "Boyacá", 
@@ -106,29 +113,41 @@ export default function CheckoutClient() {
       }
 
       // 🎯 Enviar evento Purchase a Google Analytics 4
-      sendGAEvent('event', 'purchase', {
-        transaction_id: eventId,
-        value: subtotal,
-        currency: 'COP',
-        items: items.map(item => ({
-          item_id: item.product.id,
-          item_name: item.product.name,
-          price: item.product.price,
-          quantity: item.quantity
-        }))
-      });
-      
-      // Limpiar carrito y redirigir
-      useCartStore.getState().items.forEach(item => useCartStore.getState().removeItem(item.id));
-      
+      // Usamos window.gtag directamente para poder esperar confirmación antes de redirigir
+      const gaItems = items.map(item => ({
+        item_id: item.product.id,
+        item_name: item.product.name,
+        price: item.product.price,
+        quantity: item.quantity
+      }));
+
+      // Limpiar carrito
+      useCartStore.getState().clearCart?.() || 
+        useCartStore.getState().items.forEach(i => useCartStore.getState().removeItem(i.id));
+
       // Parámetros para la página de gracias
       const params = new URLSearchParams({
         n: nombres,
         a: formData.get('direccion') as string,
         c: formData.get('ciudad') as string
       });
+      const thanksUrl = `/gracias?${params.toString()}`;
 
-      router.push(`/gracias?${params.toString()}`);
+      // Enviar a GA4 con callback para esperar confirmación antes de navegar
+      if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+        window.gtag('event', 'purchase', {
+          transaction_id: eventId,
+          value: subtotal,
+          currency: 'COP',
+          items: gaItems,
+          event_callback: () => router.push(thanksUrl)
+        });
+        // Fallback: si GA4 no responde en 1 segundo, redirigir de todas formas
+        setTimeout(() => router.push(thanksUrl), 1000);
+      } else {
+        // GA4 no cargó — redirigir inmediatamente
+        router.push(thanksUrl);
+      }
       
     } catch (error: any) {
       toast.error("Hubo un problema con tu pedido", {

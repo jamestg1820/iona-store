@@ -6,31 +6,13 @@ export async function POST(request: Request) {
     const { items, customer, shippingAddress, note } = body;
 
     const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
-    const clientId = process.env.SHOPIFY_CLIENT_ID;
-    const clientSecret = process.env.SHOPIFY_CLIENT_SECRET;
+    // ✅ Usar el Admin Access Token directamente (token permanente de la app privada)
+    const adminToken = process.env.SHOPIFY_ADMIN_ACCESS_TOKEN;
 
-    if (!clientId || !clientSecret) {
-      return NextResponse.json({ error: 'Faltan credenciales de Shopify (Client ID / Secret)' }, { status: 500 });
+    if (!adminToken) {
+      console.error('Falta SHOPIFY_ADMIN_ACCESS_TOKEN en las variables de entorno');
+      return NextResponse.json({ error: 'Configuración de servidor incompleta' }, { status: 500 });
     }
-
-    // 1. Obtener token dinámico de Shopify (válido por 1 día)
-    const tokenResponse = await fetch(`https://${domain}/admin/oauth/access_token`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        client_id: clientId,
-        client_secret: clientSecret,
-        grant_type: 'client_credentials'
-      })
-    });
-
-    const tokenData = await tokenResponse.json();
-    if (!tokenData.access_token) {
-      console.error("Error obteniendo token:", tokenData);
-      return NextResponse.json({ error: 'No se pudo autenticar con Shopify Admin API' }, { status: 500 });
-    }
-
-    const adminToken = tokenData.access_token;
 
     // 2. Separar nombre completo en firstName y lastName para Shopify
     const nameParts = (customer.fullName || customer.firstName || '').trim().split(/\s+/);
@@ -137,7 +119,8 @@ export async function POST(request: Request) {
             event_time: Math.floor(Date.now() / 1000),
             event_id: body.eventId, // MISMO ID DEL CLIENTE PARA DEDUPLICACIÓN
             action_source: 'website',
-            event_source_url: request.url,
+            // ✅ URL pública de la tienda donde ocurrió la compra, no la URL interna del API
+            event_source_url: `https://${request.headers.get('host') || domain}/checkout`,
               user_data: {
                 em: [hash(customer.email || '')],
                 ph: [hash(customer.phone || '')],
