@@ -57,7 +57,13 @@ export async function POST(request: Request) {
     const orderPayload: any = {
       order: {
         line_items: lineItems,
-        // ✅ Teléfono a nivel de cliente (aparece en "Información de contacto")
+        // ✅ Cliente con nombre (aparece en sección "Cliente" de Shopify)
+        customer: {
+          first_name: firstName,
+          last_name: lastName,
+          phone: formattedPhone,
+        },
+        // ✅ Teléfono a nivel de orden
         phone: formattedPhone,
         shipping_address: {
           first_name: firstName,
