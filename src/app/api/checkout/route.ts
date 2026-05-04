@@ -43,7 +43,8 @@ export async function POST(request: Request) {
         customer: {
           first_name: firstName,
           last_name: lastName,
-          phone: formattedPhone,
+          // No enviamos el teléfono aquí para evitar el error "phone has already been taken"
+          // si el cliente ya existe. Shopify lo tomará del root de la orden o del shipping_address.
         },
         // ✅ Teléfono a nivel de orden
         phone: formattedPhone,
