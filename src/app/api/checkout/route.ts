@@ -144,7 +144,8 @@ export async function POST(request: Request) {
               content_ids: items.map((item: any) => item.product.id),
               num_items: items.reduce((total: number, item: any) => total + item.quantity, 0)
             }
-          }]
+          }],
+          test_event_code: 'TEST27349'
         };
 
         await fetch(`https://graph.facebook.com/v19.0/${pixelId}/events?access_token=${accessToken}`, {

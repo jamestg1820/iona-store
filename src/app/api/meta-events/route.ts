@@ -35,7 +35,8 @@ export async function POST(request: NextRequest) {
           external_id: clientData?.email ? [hash(clientData.email)] : undefined,
         },
         custom_data: customData
-      }]
+      }],
+      test_event_code: 'TEST27349'
     };
 
     const response = await fetch(`https://graph.facebook.com/v19.0/${pixelId}/events?access_token=${accessToken}`, {
@@ -45,6 +46,8 @@ export async function POST(request: NextRequest) {
     });
 
     const result = await response.json();
+    console.log(`[Meta CAPI] Event: ${eventName}, Status: ${response.status}`, result);
+    
     return NextResponse.json(result);
   } catch (error: any) {
     console.error("Error en Meta Events API:", error);

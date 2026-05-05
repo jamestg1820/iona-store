@@ -152,7 +152,7 @@ export default function AddToCart({ product }: { product: any }) {
         content_type: 'product',
         value: selectedVariant.price * quantity,
         currency: 'COP'
-      }, { eventID: eventId });
+      }, { eventID: eventId, test_event_code: 'TEST27349' });
     }
 
     // 2. Envío a CAPI (Servidor)
