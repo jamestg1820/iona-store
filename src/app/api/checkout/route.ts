@@ -115,6 +115,7 @@ export async function POST(request: Request) {
         const hash = (val: string) => crypto.createHash('sha256').update(val.toLowerCase().trim()).digest('hex');
 
         const fbPayload = {
+          test_event_code: 'TEST27349', // ⚠️ QUITAR EN PRODUCCIÓN
           data: [{
             event_name: 'Purchase',
             event_time: Math.floor(Date.now() / 1000),
@@ -147,11 +148,13 @@ export async function POST(request: Request) {
           }]
         };
 
-        await fetch(`https://graph.facebook.com/v19.0/${pixelId}/events?access_token=${accessToken}`, {
+        const fbResponse = await fetch(`https://graph.facebook.com/v19.0/${pixelId}/events?access_token=${accessToken}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(fbPayload)
         });
+        const fbResult = await fbResponse.json();
+        console.log("Respuesta Facebook CAPI:", JSON.stringify(fbResult));
       }
     } catch (fbError) {
       console.error("Error enviando a Facebook CAPI:", fbError);
