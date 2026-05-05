@@ -115,7 +115,6 @@ export async function POST(request: Request) {
         const hash = (val: string) => crypto.createHash('sha256').update(val.toLowerCase().trim()).digest('hex');
 
         const fbPayload = {
-          test_event_code: 'TEST27349', // ⚠️ QUITAR EN PRODUCCIÓN
           data: [{
             event_name: 'Purchase',
             event_time: Math.floor(Date.now() / 1000),
