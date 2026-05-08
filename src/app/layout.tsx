@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
 import { Toaster } from "sonner";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import Script from "next/script";
 
 import FacebookPixel from "@/components/FacebookPixel";
 import { Suspense } from "react";
@@ -26,6 +26,8 @@ export const metadata: Metadata = {
   description: "En IONA encuentra carteras y maletas para mujer con diseño exclusivo y elegancia.",
 };
 
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-VR4XS3437H';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -36,8 +38,22 @@ export default function RootLayout({
       lang="es"
       className={`${inter.variable} ${italiana.variable} h-full antialiased`}
     >
+      <head>
+        {/* Google Analytics 4 — inyectado directamente en <head> */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="ga4-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_ID}');
+          `}
+        </Script>
+      </head>
       <body className="min-h-full flex flex-col bg-[#F5F5F5]">
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || 'G-VR4XS3437H'} />
         <Suspense fallback={null}>
           <FacebookPixel />
         </Suspense>
@@ -52,3 +68,4 @@ export default function RootLayout({
     </html>
   );
 }
+
