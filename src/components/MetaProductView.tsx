@@ -14,6 +14,7 @@ interface MetaProductViewProps {
 
 export default function MetaProductView({ product }: MetaProductViewProps) {
   useEffect(() => {
+    const numericProductId = product.id.match(/\d+$/)?.[0] || product.id;
     const eventId = `vc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
     // 0. Envío a Google Analytics 4 (Navegador)
@@ -22,7 +23,7 @@ export default function MetaProductView({ product }: MetaProductViewProps) {
       value: product.price,
       items: [
         {
-          item_id: product.id,
+          item_id: numericProductId,
           item_name: product.title,
           price: product.price,
           quantity: 1
@@ -33,7 +34,7 @@ export default function MetaProductView({ product }: MetaProductViewProps) {
     // 1. Envío al Píxel (Navegador)
     if (typeof window !== 'undefined' && window.fbq) {
       window.fbq('track', 'ViewContent', {
-        content_ids: [product.id],
+        content_ids: [numericProductId],
         content_name: product.title,
         content_type: 'product',
         value: product.price,
@@ -63,7 +64,7 @@ export default function MetaProductView({ product }: MetaProductViewProps) {
               fbc: getCookie('_fbc'),
             },
             customData: {
-              content_ids: [product.id],
+              content_ids: [numericProductId],
               content_name: product.title,
               content_type: 'product',
               value: product.price,

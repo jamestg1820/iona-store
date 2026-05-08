@@ -141,7 +141,10 @@ export async function POST(request: Request) {
               value: items.reduce((total: number, item: any) => total + (item.product.price * item.quantity), 0),
               currency: 'COP',
               content_type: 'product',
-              content_ids: items.map((item: any) => item.product.id),
+              content_ids: items.map((item: any) => {
+                const idStr = item.product.id?.toString() || '';
+                return idStr.match(/\d+$/)?.[0] || idStr;
+              }),
               num_items: items.reduce((total: number, item: any) => total + item.quantity, 0)
             }
           }]

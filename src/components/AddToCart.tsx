@@ -47,13 +47,15 @@ export default function AddToCart({ product }: { product: any }) {
 
     addItem(cartProduct, quantity);
     
+    const numericVariantId = selectedVariant.id.match(/\d+$/)?.[0] || selectedVariant.id;
+
     // 🎯 RASTREO: Enviar evento AddToCart a Google Analytics 4
     sendGAEvent('event', 'add_to_cart', {
       currency: 'COP',
       value: selectedVariant.price * quantity,
       items: [
         {
-          item_id: selectedVariant.id,
+          item_id: numericVariantId,
           item_name: product.title || product.name,
           price: selectedVariant.price,
           quantity: quantity
@@ -67,7 +69,7 @@ export default function AddToCart({ product }: { product: any }) {
     // 1. Envío al Píxel (Navegador)
     if (typeof window !== 'undefined' && window.fbq) {
       window.fbq('track', 'AddToCart', {
-        content_ids: [selectedVariant.id],
+        content_ids: [numericVariantId],
         content_name: product.title,
         content_type: 'product',
         value: selectedVariant.price * quantity,
@@ -97,7 +99,7 @@ export default function AddToCart({ product }: { product: any }) {
               fbc: getCookie('_fbc'),
             },
             customData: {
-              content_ids: [selectedVariant.id],
+              content_ids: [numericVariantId],
               content_name: product.title,
               content_type: 'product',
               value: selectedVariant.price * quantity,
@@ -127,13 +129,15 @@ export default function AddToCart({ product }: { product: any }) {
     };
     addItem(cartProduct, quantity, false);
     
+    const numericVariantId = selectedVariant.id.match(/\d+$/)?.[0] || selectedVariant.id;
+
     // 🎯 RASTREO: Enviar evento InitiateCheckout a Google Analytics 4
     sendGAEvent('event', 'begin_checkout', {
       currency: 'COP',
       value: selectedVariant.price * quantity,
       items: [
         {
-          item_id: selectedVariant.id,
+          item_id: numericVariantId,
           item_name: product.title || product.name,
           price: selectedVariant.price,
           quantity: quantity
@@ -147,7 +151,7 @@ export default function AddToCart({ product }: { product: any }) {
     // 1. Envío al Píxel (Navegador)
     if (typeof window !== 'undefined' && window.fbq) {
       window.fbq('track', 'InitiateCheckout', {
-        content_ids: [selectedVariant.id],
+        content_ids: [numericVariantId],
         content_name: product.title,
         content_type: 'product',
         value: selectedVariant.price * quantity,
@@ -179,7 +183,7 @@ export default function AddToCart({ product }: { product: any }) {
               fbc: getCookie('_fbc'),
             },
             customData: {
-              content_ids: [selectedVariant.id],
+              content_ids: [numericVariantId],
               content_name: product.title,
               content_type: 'product',
               value: selectedVariant.price * quantity,
