@@ -110,12 +110,18 @@ export default function CheckoutClient() {
           value: subtotal,
           currency: 'COP',
           content_type: 'product',
-          content_ids: items.map(item => item.product.id),
-          contents: items.map(item => ({
-            id: item.product.id,
-            quantity: item.quantity,
-            item_price: item.product.price
-          })),
+          content_ids: items.map(item => {
+            const idStr = item.product.id?.toString() || '';
+            return idStr.match(/\d+$/)?.[0] || idStr;
+          }),
+          contents: items.map(item => {
+            const idStr = item.product.id?.toString() || '';
+            return {
+              id: idStr.match(/\d+$/)?.[0] || idStr,
+              quantity: item.quantity,
+              item_price: item.product.price
+            };
+          }),
           num_items: items.reduce((total, item) => total + item.quantity, 0)
         }, { eventID: eventId }); // <--- CLAVE PARA DEDUPLICACIÓN
         console.log('✅ Facebook Pixel Purchase enviado con eventId:', eventId);
