@@ -91,11 +91,20 @@ export default function CheckoutClient() {
         throw new Error(data.error || 'Error procesando la orden');
       }
 
+      // ✅ VERIFICAR que Shopify realmente creó la orden
+      if (!data.orderId) {
+        console.error('⚠️ Shopify respondió OK pero sin orderId:', data);
+        throw new Error('La orden no se creó correctamente en Shopify');
+      }
+
+      console.log('✅ Orden creada en Shopify:', data.orderId);
+
       toast.success("¡Pedido confirmado!", {
         description: "Tu pedido será despachado pronto.",
       });
 
       // 🎯 Enviar evento Purchase a Facebook Pixel (Browser) con deduplicación
+      // SOLO se dispara si Shopify confirmó la orden con un orderId válido
       if (typeof window !== 'undefined' && window.fbq) {
         window.fbq('track', 'Purchase', {
           value: subtotal,
@@ -109,6 +118,7 @@ export default function CheckoutClient() {
           })),
           num_items: items.reduce((total, item) => total + item.quantity, 0)
         }, { eventID: eventId }); // <--- CLAVE PARA DEDUPLICACIÓN
+        console.log('✅ Facebook Pixel Purchase enviado con eventId:', eventId);
       }
 
       // 🎯 Enviar evento Purchase a Google Analytics 4
@@ -135,7 +145,7 @@ export default function CheckoutClient() {
       // Enviar a GA4 con callback para esperar confirmación antes de navegar
       if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
         window.gtag('event', 'purchase', {
-          transaction_id: eventId,
+          transaction_id: data.orderId.toString(), // Usar el orderId real de Shopify
           value: subtotal,
           currency: 'COP',
           items: gaItems,

@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     const { eventName, eventId, url, clientData, customData } = body;
 
     const accessToken = process.env.FB_ACCESS_TOKEN;
-    const pixelId = '803936628572207';
+    const pixelId = process.env.NEXT_PUBLIC_FB_PIXEL_ID || '803936628572207';
 
     if (!accessToken) {
       return NextResponse.json({ error: 'No FB Access Token' }, { status: 500 });

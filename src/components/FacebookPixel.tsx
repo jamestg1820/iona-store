@@ -4,7 +4,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import Script from 'next/script';
 
-export const FB_PIXEL_ID = '803936628572207';
+export const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID || '803936628572207';
 
 export const pageview = () => {
   window.fbq('track', 'PageView');
