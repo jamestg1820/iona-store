@@ -39,19 +39,18 @@ export default function RootLayout({
       className={`${inter.variable} ${italiana.variable} h-full antialiased`}
     >
       <head>
-        {/* Google Analytics 4 — inyectado directamente en <head> */}
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-          strategy="afterInteractive"
+        {/* Google Analytics 4 — script nativo para detección de Google */}
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_ID}');
+            `,
+          }}
         />
-        <Script id="ga4-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_ID}');
-          `}
-        </Script>
       </head>
       <body className="min-h-full flex flex-col bg-[#F5F5F5]">
         <Suspense fallback={null}>
