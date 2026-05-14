@@ -248,8 +248,6 @@ export default function AddToCart({ product }: { product: any }) {
           })}
       </div>
 
-      </div>
-
       {/* Botón de Ayuda WhatsApp */}
       <div className="mt-6">
         <a 
