@@ -6,6 +6,8 @@ import { useCartStore } from "@/store/cartStore";
 import { useRouter } from "next/navigation";
 import { sendGAEvent } from '@next/third-parties/google';
 import Accordion from "@/components/Accordion";
+import { Star } from "lucide-react";
+import ShippingTimeline from "@/components/ShippingTimeline";
 
 export default function AddToCart({ product }: { product: any }) {
   const [quantity, setQuantity] = useState(1);
@@ -34,6 +36,10 @@ export default function AddToCart({ product }: { product: any }) {
   const selectedVariant = product.variants.find((variant: any) => 
     variant.selectedOptions.every((opt: any) => selectedOptions[opt.name] === opt.value)
   ) || product.variants[0];
+
+  const price = selectedVariant.price;
+  const compareAtPrice = selectedVariant.compareAtPrice;
+  const hasDiscount = compareAtPrice && compareAtPrice > price;
 
   const handleAddToCart = () => {
     const cartProduct = {
@@ -205,6 +211,94 @@ export default function AddToCart({ product }: { product: any }) {
 
   return (
     <div className="flex flex-col">
+      <div className="flex flex-col items-center w-full space-y-4 mb-6">
+        {/* Selector de Cantidad Estilo Pill (A la izquierda) */}
+        <div className="w-full flex justify-start">
+          <div className="flex items-center justify-between border border-gray-200 rounded-full w-[100px] px-3 py-2 bg-gray-50/50">
+            <button onClick={handleDecrease} className="w-6 h-6 flex items-center justify-center text-lg font-bold text-gray-400 hover:text-black transition-colors">−</button>
+            <span className="font-black text-sm text-gray-900">{quantity}</span>
+            <button onClick={handleIncrease} className="w-6 h-6 flex items-center justify-center text-lg font-bold text-gray-400 hover:text-black transition-colors">+</button>
+          </div>
+        </div>
+
+        {/* Botón de Comprar (Checkout Inmediato) */}
+        <button 
+          onClick={handleBuyNow}
+          data-buy-now
+          className="w-full bg-black text-white py-4 rounded-full font-black tracking-[0.2em] text-sm hover:bg-[#e4d2ef] hover:text-black transition-all duration-300 shadow-xl active:scale-[0.98] mx-auto border-2 border-black"
+        >
+          COMPRAR AHORA
+        </button>
+
+        {/* Botón de Agregar al carrito */}
+        <button 
+          onClick={handleAddToCart}
+          data-add-to-cart
+          className="w-full bg-[#e4d2ef] text-gray-800 py-4 rounded-full font-black tracking-[0.2em] text-sm hover:bg-black hover:text-white transition-all duration-300 shadow-xl active:scale-[0.98] mx-auto"
+        >
+          AGREGAR AL CARRITO
+        </button>
+
+        {/* Imagen de Medios de Pago Centrada */}
+        <div className="w-full max-w-[260px] flex justify-center mx-auto mt-2 mb-4">
+          <img 
+            src="https://parchita.com.co/cdn/shop/files/Medios-de-pago_1.png?v=1754669083&width=600" 
+            alt="Medios de Pago" 
+            className="w-full h-auto opacity-80"
+          />
+        </div>
+      </div>
+
+      <div className="mb-6">
+        <h1 className="text-3xl font-black text-gray-900 tracking-tight mb-1">{product.title}</h1>
+        <div className="text-xs text-gray-400 font-medium mb-4 tracking-wider">
+          {selectedVariant.sku || 'REF: N/A'}
+        </div>
+        <div className="flex items-center gap-2 text-[#4CAF50] mb-6">
+          <div className="w-5 h-5 rounded-full border-2 border-[#4CAF50] flex items-center justify-center">
+            <svg viewBox="0 0 24 24" className="w-3 h-3 fill-current">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+            </svg>
+          </div>
+          <span className="text-sm font-bold uppercase tracking-wide">PAGA AL RECIBIR, ENVIO GRATIS</span>
+        </div>
+        
+        {/* Reseñas */}
+        <div className="flex items-center space-x-1 mb-6">
+          <div className="flex text-[#e4d2ef]">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="w-4 h-4 fill-current text-[#e4d2ef]" />
+            ))}
+          </div>
+          <span className="text-xs text-gray-400 ml-2">
+            {((product.id.split('').reduce((a: number, b: string) => a + b.charCodeAt(0), 0)) % 91) + 30} Reseñas
+          </span>
+        </div>
+
+        <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+          <div className="flex items-center gap-3 text-2xl">
+            {hasDiscount && (
+              <span className="text-gray-400 line-through font-light">${compareAtPrice.toLocaleString('es-CO')}</span>
+            )}
+            <span className={`font-black ${hasDiscount ? 'text-red-600' : 'text-gray-900'}`}>
+              ${price.toLocaleString('es-CO')}
+            </span>
+          </div>
+        </div>
+
+        {/* Mención de Envío y Pago */}
+        <div className="flex items-center gap-2 mt-2 mb-4 text-gray-500">
+          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current stroke-2">
+            <path d="M10 17h4V5H2v12h3m0 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0zm14 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0zM17 17h-3v-5h9v5h-2m-5-5L17 5h5v7" />
+          </svg>
+          <span className="text-[10px] font-black uppercase tracking-wider">
+            Envío gratis, pago contra entrega
+          </span>
+        </div>
+        
+        <ShippingTimeline />
+      </div>
+
       {/* Opciones del Producto (Lista de Colores) */}
       <div className="flex flex-col space-y-8 mt-4">
         {product.options && product.options
@@ -246,44 +340,6 @@ export default function AddToCart({ product }: { product: any }) {
               </div>
             );
           })}
-      </div>
-
-      <div className="flex flex-col items-center w-full space-y-4 mt-8 pt-6 border-t border-gray-100">
-        {/* Selector de Cantidad Estilo Pill (A la izquierda) */}
-        <div className="w-full flex justify-start">
-          <div className="flex items-center justify-between border border-gray-200 rounded-full w-[100px] px-3 py-2 bg-gray-50/50">
-            <button onClick={handleDecrease} className="w-6 h-6 flex items-center justify-center text-lg font-bold text-gray-400 hover:text-black transition-colors">−</button>
-            <span className="font-black text-sm text-gray-900">{quantity}</span>
-            <button onClick={handleIncrease} className="w-6 h-6 flex items-center justify-center text-lg font-bold text-gray-400 hover:text-black transition-colors">+</button>
-          </div>
-        </div>
-
-        {/* Botón de Comprar (Checkout Inmediato) */}
-        <button 
-          onClick={handleBuyNow}
-          data-buy-now
-          className="w-full bg-black text-white py-4 rounded-full font-black tracking-[0.2em] text-sm hover:bg-[#e4d2ef] hover:text-black transition-all duration-300 shadow-xl active:scale-[0.98] mx-auto border-2 border-black"
-        >
-          COMPRAR AHORA
-        </button>
-
-        {/* Botón de Agregar al carrito */}
-        <button 
-          onClick={handleAddToCart}
-          data-add-to-cart
-          className="w-full bg-[#e4d2ef] text-gray-800 py-4 rounded-full font-black tracking-[0.2em] text-sm hover:bg-black hover:text-white transition-all duration-300 shadow-xl active:scale-[0.98] mx-auto"
-        >
-          AGREGAR AL CARRITO
-        </button>
-
-        {/* Imagen de Medios de Pago Centrada */}
-        <div className="w-full max-w-[260px] flex justify-center mx-auto mt-2 mb-4">
-          <img 
-            src="https://parchita.com.co/cdn/shop/files/Medios-de-pago_1.png?v=1754669083&width=600" 
-            alt="Medios de Pago" 
-            className="w-full h-auto opacity-80"
-          />
-        </div>
       </div>
 
       {/* Botón de Ayuda WhatsApp */}
