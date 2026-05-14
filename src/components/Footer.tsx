@@ -93,10 +93,17 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
           <p>&copy; {new Date().getFullYear()} NALSANI S.A.S. Todos los derechos reservados.</p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
+          <div className="flex flex-wrap items-center justify-center gap-6 mt-4 md:mt-0">
             <Link href="#" className="hover:text-white transition-colors">Términos y Condiciones</Link>
             <Link href="#" className="hover:text-white transition-colors">Política de Privacidad</Link>
-            <Link href="#" className="hover:text-white transition-colors">Superintendencia de Industria y Comercio</Link>
+            <Link href="#" className="hover:text-white transition-colors flex items-center gap-2">
+              <span>Superintendencia de Industria y Comercio</span>
+              <img 
+                src="https://hogaruniversal.vtexassets.com/arquivos/IC.png" 
+                alt="Superintendencia de Industria y Comercio" 
+                className="h-8 object-contain bg-white rounded p-1"
+              />
+            </Link>
           </div>
         </div>
       </div>
