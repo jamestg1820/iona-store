@@ -248,8 +248,46 @@ export default function AddToCart({ product }: { product: any }) {
           })}
       </div>
 
+      <div className="flex flex-col items-center w-full space-y-4 mt-8 pt-6 border-t border-gray-100">
+        {/* Selector de Cantidad Estilo Pill (A la izquierda) */}
+        <div className="w-full flex justify-start">
+          <div className="flex items-center justify-between border border-gray-200 rounded-full w-[100px] px-3 py-2 bg-gray-50/50">
+            <button onClick={handleDecrease} className="w-6 h-6 flex items-center justify-center text-lg font-bold text-gray-400 hover:text-black transition-colors">−</button>
+            <span className="font-black text-sm text-gray-900">{quantity}</span>
+            <button onClick={handleIncrease} className="w-6 h-6 flex items-center justify-center text-lg font-bold text-gray-400 hover:text-black transition-colors">+</button>
+          </div>
+        </div>
+
+        {/* Botón de Comprar (Checkout Inmediato) */}
+        <button 
+          onClick={handleBuyNow}
+          data-buy-now
+          className="w-full bg-black text-white py-4 rounded-full font-black tracking-[0.2em] text-sm hover:bg-[#e4d2ef] hover:text-black transition-all duration-300 shadow-xl active:scale-[0.98] mx-auto border-2 border-black"
+        >
+          COMPRAR AHORA
+        </button>
+
+        {/* Botón de Agregar al carrito */}
+        <button 
+          onClick={handleAddToCart}
+          data-add-to-cart
+          className="w-full bg-[#e4d2ef] text-gray-800 py-4 rounded-full font-black tracking-[0.2em] text-sm hover:bg-black hover:text-white transition-all duration-300 shadow-xl active:scale-[0.98] mx-auto"
+        >
+          AGREGAR AL CARRITO
+        </button>
+
+        {/* Imagen de Medios de Pago Centrada */}
+        <div className="w-full max-w-[260px] flex justify-center mx-auto mt-2 mb-4">
+          <img 
+            src="https://parchita.com.co/cdn/shop/files/Medios-de-pago_1.png?v=1754669083&width=600" 
+            alt="Medios de Pago" 
+            className="w-full h-auto opacity-80"
+          />
+        </div>
+      </div>
+
       {/* Botón de Ayuda WhatsApp */}
-      <div className="mt-6">
+      <div className="mt-4">
         <a 
           href={`https://wa.me/573163516844?text=Hola,%20necesito%20ayuda%20con%20este%20producto:%20${product.title}`}
           target="_blank" 
@@ -284,44 +322,6 @@ export default function AddToCart({ product }: { product: any }) {
             <li>Pago contra entrega en ciudades principales</li>
           </ul>
         </Accordion>
-      </div>
-
-      <div className="flex flex-col items-center w-full space-y-4 mt-8 pt-6 border-t border-gray-100">
-        {/* Selector de Cantidad Estilo Pill (A la izquierda) */}
-        <div className="w-full flex justify-start">
-          <div className="flex items-center justify-between border border-gray-200 rounded-full w-[100px] px-3 py-2 bg-gray-50/50">
-            <button onClick={handleDecrease} className="w-6 h-6 flex items-center justify-center text-lg font-bold text-gray-400 hover:text-black transition-colors">−</button>
-            <span className="font-black text-sm text-gray-900">{quantity}</span>
-            <button onClick={handleIncrease} className="w-6 h-6 flex items-center justify-center text-lg font-bold text-gray-400 hover:text-black transition-colors">+</button>
-          </div>
-        </div>
-
-        {/* Botón de Comprar (Checkout Inmediato) */}
-        <button 
-          onClick={handleBuyNow}
-          data-buy-now
-          className="w-full bg-black text-white py-4 rounded-full font-black tracking-[0.2em] text-sm hover:bg-[#e4d2ef] hover:text-black transition-all duration-300 shadow-xl active:scale-[0.98] mx-auto border-2 border-black"
-        >
-          COMPRAR AHORA
-        </button>
-
-        {/* Botón de Agregar al carrito */}
-        <button 
-          onClick={handleAddToCart}
-          data-add-to-cart
-          className="w-full bg-[#e4d2ef] text-gray-800 py-4 rounded-full font-black tracking-[0.2em] text-sm hover:bg-black hover:text-white transition-all duration-300 shadow-xl active:scale-[0.98] mx-auto"
-        >
-          AGREGAR AL CARRITO
-        </button>
-
-        {/* Imagen de Medios de Pago Centrada */}
-        <div className="w-full max-w-[260px] flex justify-center mx-auto mt-2">
-          <img 
-            src="https://parchita.com.co/cdn/shop/files/Medios-de-pago_1.png?v=1754669083&width=600" 
-            alt="Medios de Pago" 
-            className="w-full h-auto opacity-80"
-          />
-        </div>
       </div>
     </div>
   );
