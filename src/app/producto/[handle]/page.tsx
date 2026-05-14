@@ -11,7 +11,7 @@ import { getProductByHandle, getProducts } from "@/lib/shopify";
 import { Star } from "lucide-react";
 import MetaProductView from "@/components/MetaProductView";
 import ProductReviews from "@/components/ProductReviews";
-
+import ShippingTimeline from "@/components/ShippingTimeline";
 export default async function ProductPage({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params;
   const product = await getProductByHandle(handle);
@@ -124,6 +124,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
               </div>
             </div>
 
+            <ShippingTimeline />
             <div className="mt-4">
               <AddToCart product={product} />
             </div>
