@@ -129,44 +129,6 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
               <AddToCart product={product} />
             </div>
 
-            {/* Botón de Ayuda WhatsApp */}
-            <div className="mt-3">
-              <a 
-                href={`https://wa.me/573163516844?text=Hola,%20necesito%20ayuda%20con%20este%20producto:%20${product.title}`}
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center justify-center w-full py-3 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 transition-all text-sm font-medium"
-              >
-                <img 
-                  src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
-                  alt="WhatsApp" 
-                  className="w-5 h-5 mr-3"
-                />
-                ¿Necesitas ayuda? Escríbenos
-              </a>
-            </div>
-
-            {/* Acordeones */}
-            <div className="border-t border-gray-200">
-              <Accordion title="Descripción" defaultOpen={true}>
-                <div className="shopify-description" dangerouslySetInnerHTML={{ __html: product.descriptionHtml }} />
-              </Accordion>
-              
-              <Accordion title="Envíos y Devoluciones">
-                <p><strong>Envío Gratis:</strong> En compras superiores a $150.000 a nivel nacional.</p>
-                <p className="mt-2"><strong>Devoluciones:</strong> Si realizaste una compra en Colombia, puedes solicitar el cambio de tu(s) artículo(s) dentro de los siguientes 30 días calendario posteriores a la entrega.</p>
-              </Accordion>
-              
-              <Accordion title="Medios de Pago">
-                <ul className="list-disc pl-5 mt-2 space-y-1">
-                  <li>Tarjetas de Crédito (Visa, MasterCard, Amex)</li>
-                  <li>PSE (Débito bancario)</li>
-                  <li>Addi (Paga a cuotas)</li>
-                  <li>Pago contra entrega en ciudades principales</li>
-                </ul>
-              </Accordion>
-            </div>
-
             <ProductReviews productHandle={product.handle} />
 
             {/* Botón Ver Catálogo */}

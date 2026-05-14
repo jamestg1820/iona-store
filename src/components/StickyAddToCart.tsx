@@ -27,9 +27,12 @@ export default function StickyAddToCart({ price }: StickyAddToCartProps) {
   }, []);
 
   const handleStickyClick = () => {
-    const btn = document.querySelector('[data-add-to-cart]') as HTMLButtonElement;
+    const btn = document.querySelector('[data-buy-now]') as HTMLButtonElement;
     if (btn) {
       btn.click();
+    } else {
+      const addBtn = document.querySelector('[data-add-to-cart]') as HTMLButtonElement;
+      if (addBtn) addBtn.click();
     }
   };
 
@@ -53,7 +56,7 @@ export default function StickyAddToCart({ price }: StickyAddToCartProps) {
         onClick={handleStickyClick}
         className="bg-[#e4d2ef] text-gray-800 px-8 py-3 rounded-full font-black text-xs tracking-widest shadow-lg shadow-[#e4d2ef]/20 active:scale-95 transition-all"
       >
-        AGREGAR
+        COMPRAR
       </button>
     </div>
   );

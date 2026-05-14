@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { useCartStore } from "@/store/cartStore";
 import { useRouter } from "next/navigation";
 import { sendGAEvent } from '@next/third-parties/google';
+import Accordion from "@/components/Accordion";
 
 export default function AddToCart({ product }: { product: any }) {
   const [quantity, setQuantity] = useState(1);
@@ -205,7 +206,7 @@ export default function AddToCart({ product }: { product: any }) {
   return (
     <div className="flex flex-col">
       {/* Opciones del Producto (Lista de Colores) */}
-      <div className="order-2 md:order-1 flex flex-col space-y-8 mt-8 md:mt-0">
+      <div className="flex flex-col space-y-8 mt-4">
         {product.options && product.options
           .filter((option: any) => !(option.name === 'Title' && option.values.includes('Default Title')))
           .map((option: any) => {
@@ -247,7 +248,47 @@ export default function AddToCart({ product }: { product: any }) {
           })}
       </div>
 
-      <div className="order-1 md:order-2 flex flex-col items-center w-full space-y-4 md:mt-8">
+      </div>
+
+      {/* Botón de Ayuda WhatsApp */}
+      <div className="mt-6">
+        <a 
+          href={`https://wa.me/573163516844?text=Hola,%20necesito%20ayuda%20con%20este%20producto:%20${product.title}`}
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex items-center justify-center w-full py-3 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 transition-all text-sm font-medium"
+        >
+          <img 
+            src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
+            alt="WhatsApp" 
+            className="w-5 h-5 mr-3"
+          />
+          ¿Necesitas ayuda? Escríbenos
+        </a>
+      </div>
+
+      {/* Acordeones */}
+      <div className="mt-6 border-t border-gray-200">
+        <Accordion title="Descripción" defaultOpen={true}>
+          <div className="shopify-description" dangerouslySetInnerHTML={{ __html: product.descriptionHtml }} />
+        </Accordion>
+        
+        <Accordion title="Envíos y Devoluciones">
+          <p><strong>Envío Gratis:</strong> En compras superiores a $150.000 a nivel nacional.</p>
+          <p className="mt-2"><strong>Devoluciones:</strong> Si realizaste una compra en Colombia, puedes solicitar el cambio de tu(s) artículo(s) dentro de los siguientes 30 días calendario posteriores a la entrega.</p>
+        </Accordion>
+        
+        <Accordion title="Medios de Pago">
+          <ul className="list-disc pl-5 mt-2 space-y-1">
+            <li>Tarjetas de Crédito (Visa, MasterCard, Amex)</li>
+            <li>PSE (Débito bancario)</li>
+            <li>Addi (Paga a cuotas)</li>
+            <li>Pago contra entrega en ciudades principales</li>
+          </ul>
+        </Accordion>
+      </div>
+
+      <div className="flex flex-col items-center w-full space-y-4 mt-8 pt-6 border-t border-gray-100">
         {/* Selector de Cantidad Estilo Pill (A la izquierda) */}
         <div className="w-full flex justify-start">
           <div className="flex items-center justify-between border border-gray-200 rounded-full w-[100px] px-3 py-2 bg-gray-50/50">
@@ -260,6 +301,7 @@ export default function AddToCart({ product }: { product: any }) {
         {/* Botón de Comprar (Checkout Inmediato) */}
         <button 
           onClick={handleBuyNow}
+          data-buy-now
           className="w-full bg-black text-white py-4 rounded-full font-black tracking-[0.2em] text-sm hover:bg-[#e4d2ef] hover:text-black transition-all duration-300 shadow-xl active:scale-[0.98] mx-auto border-2 border-black"
         >
           COMPRAR AHORA
