@@ -9,6 +9,7 @@ import AddToCart from "@/components/AddToCart";
 import StickyAddToCart from "@/components/StickyAddToCart";
 import { getProductByHandle, getProducts } from "@/lib/shopify";
 import ProductReviews from "@/components/ProductReviews";
+import MetaProductView from "@/components/MetaProductView";
 export default async function ProductPage({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params;
   const product = await getProductByHandle(handle);
